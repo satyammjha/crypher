@@ -19,7 +19,7 @@ const Sidenav = () => {
     ]
 
     return (
-        <Stack maxW='16rem' height='100vh' boxShadow='sm' backgroundColor='whitesmoke' justify='space-between'>
+        <Stack maxW='16rem' height='100vh'  backgroundColor='whiteSmoke' boxShadow='lg' justify='space-between' >
             <Box>
 
                 <Heading as='h1' textAlign='center' mt='24px' fontSize='23px' fontWeight='bolder'>
@@ -36,7 +36,7 @@ const Sidenav = () => {
                                 cursor='pointer'
                                 transition="0.3s all ease"
                                 _hover={
-                                    { color: 'black', bg: 'white', fontWeight: 'bolder'}
+                                    { color: 'black', bg: 'white', fontWeight: 'bolder' }
                                 }
                                 marginRight='0px'
 
