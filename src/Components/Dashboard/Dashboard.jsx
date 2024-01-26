@@ -1,22 +1,16 @@
 import React from 'react'
-import Sidenav from '../Sidenav/Sidenav';
-import Topnav from '../Topnav/Topnav';
-import { Flex, Box } from '@chakra-ui/react';
+import NavigationLayout from '../NavigationLayout/NavigationLayout'
 
-const Dashboard = () => {
+const Dashboard = ({ title }) => {
+
+
     return (
+
         <>
-            <Flex>
-                <Sidenav />
-
-                <Box flexGrow={1}>
-                    <Topnav />
-                </Box>
-            </Flex>
-
+            <NavigationLayout title={title} />
 
         </>
     )
 }
 
-export default Dashboard;
+export default Dashboard

@@ -3,7 +3,7 @@ import { HStack, Stack, Text, Icon, Heading, Box } from '@chakra-ui/react'
 import { RxDashboard } from "react-icons/rx";
 import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
-const Sidenav = () => {
+const Sidenav = ({boxShadow,backgroundColor}) => {
 
     const navLinks = [
         {
@@ -19,7 +19,12 @@ const Sidenav = () => {
     ]
 
     return (
-        <Stack maxW='16rem' height='100vh'  backgroundColor='whiteSmoke' boxShadow='lg' justify='space-between' >
+        <Stack maxW='16rem'
+            height='100vh'
+            backgroundColor={backgroundColor}
+            boxShadow={boxShadow}
+            justify='space-between'
+            >
             <Box>
 
                 <Heading as='h1' textAlign='center' mt='24px' fontSize='23px' fontWeight='bolder'>
