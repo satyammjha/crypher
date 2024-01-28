@@ -1,16 +1,10 @@
 import React from 'react'
 import NavigationLayout from '../NavigationLayout/NavigationLayout'
+import Portfolio from '../PortfolioSection/Portfolio'
 
-const Dashboard = ({ title }) => {
-
-
-    return (
-
-        <>
-            <NavigationLayout title={title} />
-
-        </>
-    )
+const Dashboard = () => {
+    return <NavigationLayout title={"Dashboard"}>
+        <Portfolio/>
+    </NavigationLayout>
 }
-
-export default Dashboard
+export default Dashboard;

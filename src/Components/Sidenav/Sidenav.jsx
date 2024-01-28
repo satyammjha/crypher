@@ -3,7 +3,7 @@ import { HStack, Stack, Text, Icon, Heading, Box } from '@chakra-ui/react'
 import { RxDashboard } from "react-icons/rx";
 import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
-const Sidenav = ({boxShadow,backgroundColor}) => {
+const Sidenav = ({ boxShadow, backgroundColor }) => {
 
     const navLinks = [
         {
@@ -24,7 +24,7 @@ const Sidenav = ({boxShadow,backgroundColor}) => {
             backgroundColor={backgroundColor}
             boxShadow={boxShadow}
             justify='space-between'
-            >
+        >
             <Box>
 
                 <Heading as='h1' textAlign='center' mt='24px' fontSize='23px' fontWeight='bolder'>
@@ -41,7 +41,7 @@ const Sidenav = ({boxShadow,backgroundColor}) => {
                                 cursor='pointer'
                                 transition="0.3s all ease"
                                 _hover={
-                                    { color: 'black', bg: 'white', fontWeight: 'bolder' }
+                                    { color: 'black', bg: '#C5C6D0', fontWeight: 'bolder' }
                                 }
                                 marginRight='0px'
 

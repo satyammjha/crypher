@@ -3,7 +3,7 @@ import Sidenav from '../Sidenav/Sidenav';
 import Topnav from '../Topnav/Topnav';
 import { Flex, Box, useDisclosure } from '@chakra-ui/react';
 
-const Dashboard = ({ title }) => {
+const Dashboard = ({ title, children }) => {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
@@ -13,12 +13,13 @@ const Dashboard = ({ title }) => {
                     base: 'none',
                     lg: 'flex'
                 }}>
-                    <Sidenav boxShadow={"lg"} backgroundColor={"whitesmoke"} />
+                    <Sidenav boxShadow={"xl"} backgroundColor={"whitesmoke"} />
                 </Box>
 
                 <NavigationDrawer isOpen={isOpen} onClose={onClose} />
                 <Box flexGrow={1}>
                     <Topnav title={title} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
+                    <Box p={"4"}>{children}</Box>
                 </Box>
             </Flex>
 

@@ -13,6 +13,7 @@ function NavigationDrawer({ isOpen, onClose }) {
                 isOpen={isOpen}
                 placement='left'
                 onClose={onClose}
+                bg="white"
             >
                 <DrawerOverlay />
                 <DrawerContent>

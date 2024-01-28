@@ -34,18 +34,18 @@ const Topnav = ({ title, onOpen }) => {
     return (
         <>
 
-            <HStack boxShadow='xl' h='16' justify={"space-between"} mx={"auto"} px='32'>
+            <HStack boxShadow='xl' h='16' justify={"space-between"} mx={"auto"} px='32' backgroundColor={"whitesmoke"}>
 
                 <Icon as={GiHamburgerMenu} display={{
                     lg: 'none',
                     base: 'block'
                 }} onClick={onOpen} />
 
-                <Heading fontSize={'28px'}>{title}</Heading>
+                <Heading fontSize={'28px'} color={"black"}>{title}</Heading>
 
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Icon as={FaCircleUser} fontSize={"33px"} />
+                        <Icon as={FaCircleUser} fontSize={"23px"} />
                     </MenuButton>
                     <MenuList>
 
