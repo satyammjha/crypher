@@ -5,7 +5,7 @@ export const Theme = extendTheme({
     font: {
         heading: 'Ubuntu',
         body: 'Ubuntu',
-        text:'Ubuntu'
+        text: 'Ubuntu'
     }
     ,
     styles: {
@@ -16,7 +16,9 @@ export const Theme = extendTheme({
         },
     },
     colors: {
-
+        purple: {
+            500: '#5F00D9'
+        },
         p: {
 
             purple: '#5F00D9',
@@ -44,5 +46,17 @@ export const Theme = extendTheme({
             md: '36px'
         },
     },
+
+    components: {
+        button: {
+            baseStyle: {
+                fontWeight: 'bold',
+                borderRadius: '100px',
+                color: 'red'
+            }
+
+        }
+
+    }
 
 })

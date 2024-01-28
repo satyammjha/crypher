@@ -5,6 +5,7 @@ import {
     MenuItem,
     Button,
     Icon,
+    Badge
 } from "@chakra-ui/react"
 import { FaCircleUser } from "react-icons/fa6";
 import { ChevronDownIcon } from '@chakra-ui/icons'
@@ -30,7 +31,6 @@ const Topnav = ({ title, onOpen }) => {
         }
     ]
 
-
     return (
         <>
 
@@ -41,7 +41,7 @@ const Topnav = ({ title, onOpen }) => {
                     base: 'block'
                 }} onClick={onOpen} />
 
-                <Heading fontSize={'28px'} color={"black"}>{title}</Heading>
+                <Heading color={"black"} fontSize={"23px"}>{title}</Heading>
 
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
