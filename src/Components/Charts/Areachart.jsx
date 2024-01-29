@@ -79,7 +79,6 @@ class ApexChart extends React.Component {
                     axisTicks: {
                         show: false, // Hide x-axis ticks
                     },
-
                 },
                 yaxis: {
                     show: 'false',
@@ -189,22 +188,22 @@ class ApexChart extends React.Component {
                     <div className="toolbar">
                         <button id="one_month"
                             onClick={() => this.updateData('one_month')} className={(this.state.selection === 'one_month' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'13px'}><Badge>1M</Badge></Text>
+                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>1M</Badge></Text>
                         </button>
 
                         <button id="six_months"
                             onClick={() => this.updateData('six_months')} className={(this.state.selection === 'six_months' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'13px'}><Badge>6M</Badge></Text>
+                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>6M</Badge></Text>
                         </button>
 
                         <button id="one_year"
                             onClick={() => this.updateData('one_year')} className={(this.state.selection === 'one_year' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'13px'}><Badge>1Y</Badge></Text>
+                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>1Y</Badge></Text>
                         </button>
 
                         <button id="all"
                             onClick={() => this.updateData('all')} className={(this.state.selection === 'all' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'13px'}><Badge>All</Badge></Text>
+                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>All</Badge></Text>
                         </button>
                     </div>
 

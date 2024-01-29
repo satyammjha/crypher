@@ -69,7 +69,7 @@ const Currentprice = () => {
 
                 </HStack>
 
-                <HStack spacing={4} ml={"100px"}>
+                <HStack ml={"100px"}>
                     <ButtonItem text={"Buy"} scheme={purple} icon={<IoMdAddCircle />} style={btnStyles} />
                     <ButtonItem text={"sell"} scheme={purple} icon={<GrSubtractCircle />} style={btnStyles} />
                 </HStack>
