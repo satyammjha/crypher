@@ -4,9 +4,10 @@ import {
     MenuList,
     MenuItem,
     Button,
-    Icon,
-    Badge
-} from "@chakra-ui/react"
+    Icon
+}
+
+    from "@chakra-ui/react"
 import { FaCircleUser } from "react-icons/fa6";
 import { ChevronDownIcon } from '@chakra-ui/icons'
 import { BiSupport } from "react-icons/bi";
