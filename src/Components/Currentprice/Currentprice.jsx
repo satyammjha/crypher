@@ -53,7 +53,6 @@ const Currentprice = () => {
         allTime: generateDummyData(new Date('2020-01-01'), 100, 3), // 100 days with a 3-day interval
     };
 
-
     return <Customcard w={"max-content"} mt={'10px'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} > Current price:</Text>
 

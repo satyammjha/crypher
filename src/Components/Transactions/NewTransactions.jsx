@@ -41,7 +41,6 @@ const NewTransactions = () => {
             amount: '+0.000437 btc'
 
         },
-
         {
             name: 'INR Deposit',
             date: '23-01-2024 03:33 AM',
@@ -50,8 +49,6 @@ const NewTransactions = () => {
         },
 
     ]
-
-
     return (
         <>
             <Customcard height={'37vh'} marginTop={'10px'} overflowY={'scroll'} scrollBehavior={'hidden'}
@@ -71,8 +68,6 @@ const NewTransactions = () => {
                         marginTop={'-1.5rem'} position={'fixed'} bg={'white'} w={'25vw'}>Recent Transactions</Text>
 
                 </Box>
-
-
 
                 {transactionsData.map((data, index) => (
                     <>
@@ -95,8 +90,7 @@ const NewTransactions = () => {
                                 <Text fontWeight={500} fontSize={'13px'} color={'gray'}>{data.date}</Text>
                             </Stack>
 
-                            <Text fontWeight={'bold'} fontSize={'14px'} my={'-10px'} color={'green'} marginTop={'3px'} mx={'auto'}>{data.amount}</Text>
-
+                            <Text fontWeight={'bold'} fontSize={'13px'} my={'-10px'} color={'green'} marginTop={'3px'} mx={'auto'}>{data.amount}</Text>
                         </HStack>
                         <hr />
 
