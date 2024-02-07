@@ -3,6 +3,8 @@ import { HStack, Stack, Text, Icon, Heading, Box } from '@chakra-ui/react'
 import { RxDashboard } from "react-icons/rx";
 import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
+import { FaBriefcase } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 const Sidenav = ({ boxShadow, backgroundColor }) => {
 
     const navLinks = [
@@ -10,6 +12,12 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
             icon: RxDashboard,
             Link: '/',
             text: 'Dashboard'
+
+        },
+        {
+            icon: FaBriefcase,
+            Link: '/portfolio',
+            text: 'Portfolio'
         },
         {
             icon: TbArrowsDoubleNeSw,
@@ -32,25 +40,27 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                 <Box mt='6'>
                     {navLinks.map((link, index) => {
                         return (
-                            <HStack
-                                marginLeft='0'
-                                key={index}
-                                color='gray.500'
-                                p='5px'
-                                mt='10px'
-                                cursor='pointer'
-                                transition="0.3s all ease"
-                                _hover={
-                                    { color: 'black', bg: '#C5C6D0', fontWeight: 'bolder' }
-                                }
-                                marginRight='0px'
+                            <Link to={link.Link}>
+                                <HStack
+                                    marginLeft='0'
+                                    key={index}
+                                    color='gray.500'
+                                    p='5px'
+                                    mt='10px'
+                                    cursor='pointer'
+                                    transition="0.3s all ease"
+                                    _hover={
+                                        { color: 'black', bg: '#C5C6D0', fontWeight: 'bolder' }
+                                    }
+                                    marginRight='0px'
+                                >
 
-                            >
 
-                                <Icon as={link.icon} />
-                                <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
+                                    <Icon as={link.icon} />
+                                    <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
 
-                            </HStack>
+                                </HStack>
+                            </Link>
                         )
                     })}
                 </Box>
