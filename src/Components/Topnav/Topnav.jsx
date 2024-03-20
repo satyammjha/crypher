@@ -59,11 +59,8 @@ const Topnav = ({ title, onOpen }) => {
                             )
 
                         })}
-
-
                     </MenuList>
                 </Menu>
-
             </HStack>
         </>
     )

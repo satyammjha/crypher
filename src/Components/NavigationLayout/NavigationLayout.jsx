@@ -15,7 +15,6 @@ const Dashboard = ({ title, children }) => {
                 }}>
                     <Sidenav boxShadow={"xl"} backgroundColor={"whitesmoke"} />
                 </Box>
-
                 <NavigationDrawer isOpen={isOpen} onClose={onClose} />
                 <Box flexGrow={1}>
                     <Topnav title={title} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
