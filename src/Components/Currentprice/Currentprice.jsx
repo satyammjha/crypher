@@ -68,13 +68,12 @@ const Currentprice = () => {
         oneYear: generateDummyData(oneYearAgo, 365, 1), // 365 days for one year
         allTime: generateDummyData(new Date('2020-01-01'), 100, 3), // 100 days with a 3-day interval
     };
-
     const [currency, setCurrency] = useState('USD');
-    const [currentPrice, setCurrentPrice] = useState('33,000');
+    const [currentPrice, setCurrentPrice] = useState(33, 0o0);
     const [buyInput, setBuyInput] = useState('btc');
     const [selected, setSelected] = useState('INR');
     const [inputAmount, setInputAmount] = useState(1);
-    const [totalAmount, setTotalAmount] = useState(0);
+    const [totalAmount, setTotalAmount] = useState();
 
     return <Customcard w={"max-content"} mt={'10px'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} > Current price:</Text>
@@ -122,26 +121,37 @@ const Currentprice = () => {
                                         <Tag>Buy in:</Tag>
                                         <Tag colorScheme={selected === 'BTC' ? 'purple' : 'inherit'} cursor={'pointer'} onClick={() => {
                                             setSelected('BTC')
+                                            setTotalAmount(buyInput * currentPrice)
                                         }}>BTC</Tag>
                                         <Tag colorScheme={selected === 'INR' ? 'purple' : 'inherit'} cursor={'pointer'} onClick={() => {
                                             setSelected('INR')
+                                            setTotalAmount(buyInput / currentPrice)
                                         }}>INR</Tag>
                                     </HStack>
                                     <InputGroup>
                                         <InputLeftAddon fontWeight={'bold'} fontSize={'13px'}>
                                             Enter Amount({selected})
                                         </InputLeftAddon>
-                                        <Input type='number' placeholder={`Enter in ${selected}`} />
+                                        <Input type='number' placeholder={`Enter in ${selected}`} onChange={(e) => {
+                                            if (inputAmount > 100) {
+                                                return alert('Amount cannot be more than 100')
+                                            }
+                                            else {
+                                                setBuyInput(e.target.value)
+                                                selected === 'INR' ? setTotalAmount(e.target.value / currentPrice) : setTotalAmount(e.target.value * currentPrice)
+                                            }
+                                        }} />
                                     </InputGroup>
                                 </Stack>
-                                <HStack>
+                                <HStack marginY={'3px'}>
                                     <Tag>
                                         Total Amount:
                                     </Tag>
                                     {/* <Text>{selected === "INR" ? (currentPrice / parseFloat(inputAmount)) : (currentPrice * parseFloat(inputAmount))}
                                 </Text> */}
-                                    <Text marginTop={'10px'} fontWeight={'bold'}>{totalAmount}</Text>
+                                    <Text marginTop={'px'} fontWeight={'bold'}>{totalAmount} {selected === 'INR' ? 'btc' : 'inr.'}</Text>
                                 </HStack>
+                                <hr />
                                 <HStack marginTop={'10px'} marginLeft={'20%'}> <ButtonItem text={"Buy"} scheme={purple} icon={<IoMdAddCircle />} style={btnStyles} />
                                     <ButtonItem text={"sell"} scheme={purple} icon={<GrSubtractCircle />} style={btnStyles} /></HStack>
                             </PopoverBody>

@@ -5,7 +5,13 @@ import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
 import { FaBriefcase } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { ModeContext } from "../../Context/ModeProvider";
+import { useContext } from "react";
+
+
 const Sidenav = ({ boxShadow, backgroundColor }) => {
+
+    const { mode } = useContext(ModeContext)
 
     const navLinks = [
         {
@@ -35,7 +41,7 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
         >
             <Box>
 
-                <Heading as='h1' textAlign='center' mt='24px' fontSize='23px' fontWeight='bolder'>
+                <Heading as='h1' textAlign='center' mt='24px' color={mode === 'light' ? 'inherit' : 'whitesmoke'} fontSize='23px' fontWeight='bolder'>
                     @CRYPHER</Heading>
                 <Box mt='6'>
                     {navLinks.map((link, index) => {
@@ -43,8 +49,8 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                             <Link to={link.Link}>
                                 <HStack
                                     marginLeft='0'
+                                    color={mode === 'light' ? 'gray.500' : 'whitesmoke'}
                                     key={index}
-                                    color='gray.500'
                                     p='5px'
                                     mt='10px'
                                     cursor='pointer'
@@ -58,8 +64,8 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
 
                                     <Icon as={link.icon} />
                                     <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
-
                                 </HStack>
+                                <hr color={mode==='light'?'black':'white'}/>
                             </Link>
                         )
                     })}

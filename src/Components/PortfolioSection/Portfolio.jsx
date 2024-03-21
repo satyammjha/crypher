@@ -4,15 +4,18 @@ import { IoWallet } from "react-icons/io5";
 import ButtonItem from '../../Utilities/Button';
 import { GiSaveArrow } from "react-icons/gi";
 import { HiUpload } from "react-icons/hi";
+import { BalanceContext } from '../../Context/BalanceProvider';
+import { useContext } from 'react';
 
 const Portfolio = () => {
     let purple = "purple";
 
+    const { portfolioBalance, setPortfolioBalance, walletBalance, setWalletBalance, btcBalance, setBtcBalance } = useContext(BalanceContext)
 
     const balances = {
-        investment: '33,000',
-        btcBalance: '0.893',
-        inrBalance: '73,000'
+        investment: portfolioBalance,
+        btcBalance: btcBalance,
+        inrBalance: walletBalance
     }
 
     return (

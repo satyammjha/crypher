@@ -14,8 +14,6 @@ const Dashboard = () => {
                     <Currentprice />
                     <NewTransactions />
                 </HStack>
-
-
                 <News />
             </Stack>
             <Topmovers />

@@ -5,7 +5,6 @@ import {
     MenuItem,
     Button,
     Icon,
-    Text,
     Box
 } from "@chakra-ui/react"
 import { FaCircleUser } from "react-icons/fa6";
@@ -54,7 +53,9 @@ const Topnav = ({ title, onOpen }) => {
                 }} fontSize={'23px'} alignItems={'center'} onClick={() => {
                     setMode(mode === 'light' ? 'dark' : 'light')
                 }}>
-                    {mode === 'light' ? <GiMoon /> : <IoMdSunny color="white" />}
+                   
+                        {mode === 'light' ? <GiMoon /> : <IoMdSunny color="white" />}
+                  
                 </Box>
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
