@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Customcard } from '../Customcard/Customcard'
 import {
     HStack, Text, Badge, Button, Icon, Popover,
@@ -75,6 +75,7 @@ const Currentprice = () => {
     const [selected, setSelected] = useState('INR');
     const [inputAmount, setInputAmount] = useState(1);
     const [totalAmount, setTotalAmount] = useState(0);
+
     return <Customcard w={"max-content"} mt={'10px'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} > Current price:</Text>
         <HStack>
