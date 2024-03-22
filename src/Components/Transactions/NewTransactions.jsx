@@ -63,10 +63,8 @@ const NewTransactions = () => {
                 }}>
 
                 <Box>
-
                     <Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} p={'5px'} marginLeft={'-13px'}
                         marginTop={'-1.5rem'} position={'fixed'} bg={'white'} w={'25vw'}>Recent Transactions</Text>
-
                 </Box>
 
                 {transactionsData.map((data, index) => (

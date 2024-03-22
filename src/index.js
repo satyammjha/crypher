@@ -7,14 +7,17 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { Theme } from './Theme/index'
 import { ModeProvider } from './Context/ModeProvider';
 import { BalanceProvider } from './Context/BalanceProvider';
+import { CurrencyProvider } from './Context/CurrencyProvider';
 
 ReactDOM.render(
   <React.StrictMode>
     <ModeProvider>
       <BalanceProvider>
-        <ChakraProvider theme={Theme}>
-          <App />
-        </ChakraProvider>
+        <CurrencyProvider>
+          <ChakraProvider theme={Theme}>
+            <App />
+          </ChakraProvider>
+        </CurrencyProvider>
       </BalanceProvider>
     </ModeProvider>
   </React.StrictMode>,

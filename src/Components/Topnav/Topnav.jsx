@@ -5,7 +5,8 @@ import {
     MenuItem,
     Button,
     Icon,
-    Box
+    Box,
+    Select
 } from "@chakra-ui/react"
 import { FaCircleUser } from "react-icons/fa6";
 import { ChevronDownIcon } from '@chakra-ui/icons'
@@ -17,11 +18,12 @@ import { useContext } from "react";
 import { ModeContext } from "../../Context/ModeProvider";
 import { GiMoon } from "react-icons/gi";
 import { IoMdSunny } from "react-icons/io";
+import { currencyContext } from "../../Context/CurrencyProvider";
 
 const Topnav = ({ title, onOpen }) => {
 
     const { mode, setMode } = useContext(ModeContext);
-
+    const { currency, setCurrency } = useContext(currencyContext);
     let topNavLinks = [
 
         {
@@ -46,6 +48,9 @@ const Topnav = ({ title, onOpen }) => {
                     base: 'block'
                 }} onClick={onOpen} />
                 <Heading color={mode === 'light' ? 'black' : 'white'} fontSize={"23px"}>{title}</Heading>
+
+
+
                 <Box padding={'3px'} borderRadius={'50%'} border={'2px solid'} borderColor={mode === 'light' ? 'black' : 'white'} cursor={'pointer'} _hover={{
                     opacity: '0.8'
                 }} style={{
@@ -53,10 +58,16 @@ const Topnav = ({ title, onOpen }) => {
                 }} fontSize={'23px'} alignItems={'center'} onClick={() => {
                     setMode(mode === 'light' ? 'dark' : 'light')
                 }}>
-                   
-                        {mode === 'light' ? <GiMoon /> : <IoMdSunny color="white" />}
-                  
+
+                    {mode === 'light' ? <GiMoon /> : <IoMdSunny color="white" />}
                 </Box>
+                <Select placeholder='INR' marginLeft={'-30%'} color={mode === 'light' ? 'black' : 'white'} width={'8%'} cursor={'pointer'} onChange={() => {
+                    setCurrency(currency === 'USD' ? 'INR' : 'USD')
+                    console.log(currency)
+                }}>
+                    <option value='USD'>USD</option>
+                </Select>
+
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                         <Icon as={FaCircleUser} fontSize={"23px"} />
