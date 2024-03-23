@@ -6,9 +6,6 @@ import { currencyContext } from '../../Context/CurrencyProvider';
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const Topmovers = () => {
-
-    console.log(apiKey)
-
     const { mode } = useContext(ModeContext);
     const { currency } = useContext(currencyContext);
     const [coinList, setCoinList] = useState([]);
@@ -65,13 +62,13 @@ const Topmovers = () => {
                     handleSearch(e.target.value)
                 }
             }} />
-            {console.log(inputText)}
+
             <HStack gap={'4rem'} background={'#5F00D9'} color='white' borderRadius={'3px'} marginTop={'13px'}>
                 <Heading fontSize={'14px'} padding={'10px'}>Coin</Heading>
                 <Heading fontSize={'14px'} marginLeft={'3.3vw'} padding={'10px'}>Price</Heading>
                 <Heading fontSize={'14px'} padding={'10px'}>Change(24hrs.)</Heading>
             </HStack>
-            <Customcard height={'97%'} width={'100%'} marginTop={'10px'} backgroundColor={mode === 'light' ? 'white' : '#060606'} overflowY={'scroll'} scrollBehavior={'hidden'}
+            <Customcard height={'82%'} width={'100%'} marginTop={'10px'} backgroundColor={mode === 'light' ? 'white' : '#060606'} overflowY={'scroll'} scrollBehavior={'hidden'}
                 css={{
                     overflowY: 'auto',
                     '::-webkit-scrollbar': {
@@ -133,7 +130,7 @@ const Topmovers = () => {
                                         ) : (
                                             <Heading fontSize={'14px'} color={coin.price_change_percentage_24h < 0 ? 'red' : 'green'}>
                                                 {coin.price_change_percentage_24h < 0 ? '' : '+'}
-                                                {coin.price_change_percentage_24h.toFixed(2)}{'%'}
+                                                {coin.price_change_percentage_24h}{'%'}
                                             </Heading>
                                         )}
                                     </HStack>

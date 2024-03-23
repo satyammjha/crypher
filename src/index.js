@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -9,7 +9,9 @@ import { ModeProvider } from './Context/ModeProvider';
 import { BalanceProvider } from './Context/BalanceProvider';
 import { CurrencyProvider } from './Context/CurrencyProvider';
 
-ReactDOM.render(
+const root = document.getElementById('root');
+
+const app = (
   <React.StrictMode>
     <ModeProvider>
       <BalanceProvider>
@@ -20,7 +22,11 @@ ReactDOM.render(
         </CurrencyProvider>
       </BalanceProvider>
     </ModeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
+
+
+const rootElement = ReactDOM.createRoot(root);
+rootElement.render(app);
+
 reportWebVitals();

@@ -46,7 +46,7 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                 <Box mt='6'>
                     {navLinks.map((link, index) => {
                         return (
-                            <Link to={link.Link}>
+                            <Link to={link.Link} key={index}>
                                 <HStack
                                     marginLeft='0'
                                     color={mode === 'light' ? 'gray.500' : 'whitesmoke'}
@@ -65,7 +65,7 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                                     <Icon as={link.icon} />
                                     <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
                                 </HStack>
-                                <hr color={mode==='light'?'black':'white'}/>
+                                <hr color={mode === 'light' ? 'black' : 'white'} />
                             </Link>
                         )
                     })}

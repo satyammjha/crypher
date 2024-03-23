@@ -22,11 +22,9 @@ const Dashboard = ({ title, children }) => {
                 <NavigationDrawer isOpen={isOpen} onClose={onClose} />
                 <Box flexGrow={1}>
                     <Topnav title={title} isOpen={isOpen} onClose={onClose} onOpen={onOpen} />
-                    <Box p={"4"}>{children}</Box>
+                    <Box p={"1"}>{children}</Box>
                 </Box>
             </Flex>
-
-
         </>
     )
 }

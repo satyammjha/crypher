@@ -6,5 +6,4 @@ export const Customcard = chakra('div', {
         borderRadius: 'xl',
         p: '6'
     }
-
 })

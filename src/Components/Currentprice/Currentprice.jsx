@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Customcard } from '../Customcard/Customcard'
 import {
     HStack, Text, Badge, Button, Icon, Popover,
@@ -6,7 +6,6 @@ import {
     PopoverContent,
     PopoverHeader,
     PopoverBody,
-    PopoverFooter,
     PopoverArrow,
     Tag,
     PopoverCloseButton,
@@ -14,7 +13,6 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
-    PopoverAnchor,
     Input,
     InputLeftAddon,
     InputGroup,
@@ -26,8 +24,39 @@ import { GrSubtractCircle } from "react-icons/gr";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import Areachart from '../Charts/Areachart'
 import { IoIosArrowDropdown } from "react-icons/io";
+import { currencyContext } from '../../Context/CurrencyProvider';
+const apiKey = process.env.REACT_APP_API_KEY;
 
 const Currentprice = () => {
+    const [days, setDays] = useState(365);
+    const [chartData, setChartData] = useState([])
+    const { currency } = useContext(currencyContext);
+
+    const getChartData = async () => {
+        console.log("Currency is", currency)
+
+        try {
+            const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
+            const response = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=7`, options);
+            const data = await response.json();
+            console.log("Data from API:", data);
+
+            if (data.prices.length > 0) {
+                setChartData(data[1]);
+                const timestamp = data.prices[0][0];
+                console.log("Date is", new Date(timestamp));
+            } else {
+                console.log("No data available");
+            }
+        } catch (error) {
+            console.error("Error fetching chart data:", error);
+        }
+    }
+
+    useEffect(() => {
+        getChartData()
+    }, [])
+
     const btnStyles = {
         height: '30px',
         bg: 'white',
@@ -42,49 +71,24 @@ const Currentprice = () => {
         inrBalance: '73,000',
         gain: '-3.33%'
     }
-
-    const generateDummyData = (startDate, numberOfDays, interval) => {
-        const data = [];
-        for (let i = 0; i < numberOfDays; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i * interval);
-            data.push({
-                x: currentDate.getTime(),
-                y: Math.floor(Math.random() * 100) + 1,
-            });
-        }
-        return data;
-    };
-    const currentDate = new Date();
-    const oneMonthAgo = new Date(currentDate);
-    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-    const sixMonthsAgo = new Date(currentDate);
-    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
-    const oneYearAgo = new Date(currentDate);
-    oneYearAgo.setFullYear(currentDate.getFullYear() - 1);
-    const dummyData = {
-        oneMonth: generateDummyData(oneMonthAgo, 30, 1), // 30 days for one month
-        sixMonths: generateDummyData(sixMonthsAgo, 180, 1), // 180 days for six months
-        oneYear: generateDummyData(oneYearAgo, 365, 1), // 365 days for one year
-        allTime: generateDummyData(new Date('2020-01-01'), 100, 3), // 100 days with a 3-day interval
-    };
-    const [currency, setCurrency] = useState('USD');
+    const [tradeCurrency, setTradeCurrency] = useState('USD');
     const [currentPrice, setCurrentPrice] = useState(33, 0o0);
     const [buyInput, setBuyInput] = useState('btc');
     const [selected, setSelected] = useState('INR');
     const [inputAmount, setInputAmount] = useState(1);
     const [totalAmount, setTotalAmount] = useState();
 
-    return <Customcard w={"max-content"} mt={'10px'}>
-        <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} > Current price:</Text>
+    return <Customcard w={"55vw"} mt={'10px'} height={'max-content'} padding={'10px'}>
+        <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} ></Text>
         <HStack>
             <HStack>
                 <HStack>
                     <Text fontSize={"15px"} color={'black'} fontWeight={"bold"}>₹{balances.investment}</Text>
                     <Text fontSize={"13px"} color={parseInt(balances.gain) > 0 ? 'green' : 'red'} fontWeight={"bold"} >
                         {balances.gain}
-                        <Badge colorScheme='green' fontSize={'7px'} ml={'6px'}>
-                            <Icon as={MdOutlineArrowOutward} /></Badge></Text>
+                    </Text>
+                    <Badge colorScheme='green' fontSize={'7px'} ml={'6px'}>
+                        <Icon as={MdOutlineArrowOutward} /></Badge>
                 </HStack>
                 <HStack ml={"100px"}>
                     <Popover>
@@ -104,17 +108,17 @@ const Currentprice = () => {
                                         <Menu>
                                             <MenuButton size={'sm'} as={Button} colorScheme={purple}>
                                                 <HStack>
-                                                    <Text>{currency}</Text>
+                                                    <Text>{tradeCurrency}</Text>
                                                     <IoIosArrowDropdown />
                                                 </HStack>
                                             </MenuButton>
                                             <MenuList>
-                                                <MenuItem onClick={() => { setCurrency('USD') }}>USD</MenuItem>
-                                                <MenuItem onClick={() => { setCurrency('INR') }}>INR</MenuItem>
+                                                <MenuItem onClick={() => { setTradeCurrency('USD') }}>USD</MenuItem>
+                                                <MenuItem onClick={() => { setTradeCurrency('INR') }}>INR</MenuItem>
                                             </MenuList>
                                         </Menu>
                                         <Text>
-                                            <Tag> Current Price: </Tag>{currentPrice} {currency}
+                                            <Tag> Current Price: </Tag>{currentPrice} {tradeCurrency}
                                         </Text>
                                     </HStack>
                                     <HStack gap={8}>
@@ -162,8 +166,7 @@ const Currentprice = () => {
                 </HStack>
             </HStack>
         </HStack>
-        <Areachart data={dummyData.oneMonth} height={130} />
+        <Areachart data={chartData} height={'100%'} />
     </Customcard >
-
 }
 export default Currentprice;

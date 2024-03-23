@@ -4,11 +4,14 @@ import ApexCharts from "apexcharts";
 import { Text, Badge } from "@chakra-ui/react";
 
 class ApexChart extends React.Component {
+
+    
     constructor(props) {
         super(props);
 
         this.state = {
             series: [{
+                name:'bitcoin ₹',
                 data: props.data || []
             }],
             options: {
@@ -19,18 +22,16 @@ class ApexChart extends React.Component {
                     zoom: {
                         autoScaleYaxis: true
                     },
-
-
                     grid: {
-                        show: true,      // you can either change hear to disable all grids
+                        show: false,      // you can either change hear to disable all grids
                         xaxis: {
                             lines: {
-                                show: true  //or just here to disable only x axis grids
+                                show: false  //or just here to disable only x axis grids
                             }
                         },
                         yaxis: {
                             lines: {
-                                show: true  //or just here to disable only y axis
+                                show: false //or just here to disable only y axis
                             }
                         },
                     },
@@ -114,41 +115,12 @@ class ApexChart extends React.Component {
                     }
                 },
             },
-            selection: 'one_year',
         };
     }
 
     updateData(timeline) {
         const currentDate = new Date();
         let startDate, endDate;
-
-        switch (timeline) {
-            case 'one_month':
-                startDate = new Date(currentDate);
-                startDate.setMonth(currentDate.getMonth() - 1);
-                endDate = currentDate;
-                break;
-            case 'six_months':
-                startDate = new Date(currentDate);
-                startDate.setMonth(currentDate.getMonth() - 6);
-                endDate = currentDate;
-                break;
-            case 'one_year':
-                startDate = new Date(currentDate);
-                startDate.setFullYear(currentDate.getFullYear() - 1);
-                endDate = currentDate;
-                break;
-            case 'ytd':
-                startDate = new Date(currentDate.getFullYear(), 0, 1);
-                endDate = currentDate;
-                break;
-            case 'all':
-                startDate = new Date('2022-01-01'); // Adjust the start date as needed
-                endDate = currentDate;
-                break;
-            default:
-                return;
-        }
 
         const newData = this.props.data.filter(point => point.x >= startDate.getTime() && point.x <= endDate.getTime());
 
@@ -185,33 +157,10 @@ class ApexChart extends React.Component {
         return (
             <div>
                 <div id="chart">
-                    <div className="toolbar">
-                        <button id="one_month"
-                            onClick={() => this.updateData('one_month')} className={(this.state.selection === 'one_month' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>1M</Badge></Text>
-                        </button>
-
-                        <button id="six_months"
-                            onClick={() => this.updateData('six_months')} className={(this.state.selection === 'six_months' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>6M</Badge></Text>
-                        </button>
-
-                        <button id="one_year"
-                            onClick={() => this.updateData('one_year')} className={(this.state.selection === 'one_year' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>1Y</Badge></Text>
-                        </button>
-
-                        <button id="all"
-                            onClick={() => this.updateData('all')} className={(this.state.selection === 'all' ? 'active' : '')}>
-                            <Text fontSize={'11px'} marginRight={'10px'}><Badge>All</Badge></Text>
-                        </button>
-                    </div>
-
-                    <div id="chart-timeline">
                         <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={this.props.height} />
-                    </div>
+                    
                 </div>
-                <div id="html-dist"></div>
+               
             </div>
         );
     }

@@ -5,7 +5,6 @@ export const Theme = extendTheme({
     font: {
         heading: 'Ubuntu',
         body: 'Ubuntu',
-        text: 'Ubuntu'
     }
     ,
     styles: {
