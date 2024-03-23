@@ -9,7 +9,7 @@ const Watchlist = () => {
         <>
             <Customcard
                 height={'46.5vh'}
-                backgroundColor={'whitesmoke'}
+                backgroundColor={mode === 'light'?'whitesmoke':'#1A202C'}
                 width={'28.5vw'}
                 css={{
                     overflowY: 'auto',

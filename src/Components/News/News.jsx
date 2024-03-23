@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Customcard } from '../Customcard/Customcard';
 import { Box, Text, HStack, Image, Stack, Heading } from '@chakra-ui/react';
+import { ModeContext } from '../../Context/ModeProvider';
+
 const apiKey = process.env.REACT_APP_API_KEY_1;
 
 const News = () => {
     const [result, setResult] = useState([]);
+    const { mode } = useContext(ModeContext);
 
     useEffect(() => {
         const newsFunc = async () => {
@@ -34,7 +37,7 @@ const News = () => {
     return (
         <Customcard
             height={'46.6vh'}
-            backgroundColor={'whitesmoke'}
+            backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}
             width={'28.5vw'}
             css={{
                 overflowY: 'auto',

@@ -17,7 +17,7 @@ const Dashboard = ({ title, children }) => {
                     base: 'none',
                     lg: 'flex'
                 }}>
-                    <Sidenav boxShadow={"xl"} backgroundColor={mode === 'light' ? 'whitesmoke' : 'black'} />
+                    <Sidenav boxShadow={"xl"}    backgroundColor={mode === 'light'?'whitesmoke':'#1A202C'} />
                 </Box>
                 <NavigationDrawer isOpen={isOpen} onClose={onClose} />
                 <Box flexGrow={1}>

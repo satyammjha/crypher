@@ -69,7 +69,7 @@ const Currentprice = () => {
     const [inputAmount, setInputAmount] = useState(1);
     const [totalAmount, setTotalAmount] = useState();
 
-    return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whiteSmoke' : 'black'}>
+    return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} ></Text>
         <HStack>
             <HStack>

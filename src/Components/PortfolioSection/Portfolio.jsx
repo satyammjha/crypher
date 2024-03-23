@@ -6,9 +6,12 @@ import { GiSaveArrow } from "react-icons/gi";
 import { HiUpload } from "react-icons/hi";
 import { BalanceContext } from '../../Context/BalanceProvider';
 import { useContext } from 'react';
+import { ModeContext } from '../../Context/ModeProvider';
 
 const Portfolio = () => {
     let purple = "purple";
+
+    const { mode } = useContext(ModeContext);
 
     const { portfolioBalance, setPortfolioBalance, walletBalance, setWalletBalance, btcBalance, setBtcBalance } = useContext(BalanceContext)
 
@@ -23,7 +26,7 @@ const Portfolio = () => {
             <HStack
                 w={'89vw'}
                 borderRadius={"xl"}
-                bg={'white'}
+                backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}
                 padding={"10px"}
                 mt={"10px"}
                 color={"black.80"}
@@ -41,10 +44,10 @@ const Portfolio = () => {
 
                 <Stack>
                     <HStack>
-                        <Text fontSize={"17px"} color={"gray"} fontWeight={"bold"}>Total portfolio value:</Text>
+                        <Text fontSize={"17px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>Total portfolio value:</Text>
                         <Icon as={RiInformationFill} />
                     </HStack>
-                    <Text fontSize={"20px"} color={'black'} fontWeight={"bold"}>₹{balances.investment} <Badge colorScheme='green'>inr</Badge></Text>
+                    <Text fontSize={"20px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>₹{balances.investment} <Badge colorScheme='green'>inr</Badge></Text>
                 </Stack>
                 <Stack
                     marginLeft={{
@@ -60,8 +63,8 @@ const Portfolio = () => {
                         <Icon as={IoWallet} />
                     </HStack>
                     <HStack>
-                        <Text fontSize={"20px"} color={'black'} fontWeight={"bold"}>{balances.btcBalance} <Badge colorScheme='green'>btc</Badge></Text>
-                        <Text fontSize={"20px"} color={'black'} fontWeight={"bold"} mx={"33px"}>₹ {balances.inrBalance}<Badge colorScheme='green' ml={"3px"}>inr</Badge> </Text>
+                        <Text fontSize={"20px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>{balances.btcBalance} <Badge colorScheme='green'>btc</Badge></Text>
+                        <Text fontSize={"20px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"} mx={"33px"}>₹ {balances.inrBalance}<Badge colorScheme='green' ml={"3px"}>inr</Badge> </Text>
                     </HStack>
 
                 </Stack>
