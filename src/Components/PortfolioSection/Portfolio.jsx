@@ -20,8 +20,8 @@ const Portfolio = () => {
 
     return (
         <>
-
             <HStack
+                w={'89vw'}
                 borderRadius={"xl"}
                 bg={'white'}
                 padding={"10px"}
@@ -31,7 +31,6 @@ const Portfolio = () => {
                     {
                         base: "flex-start",
                         xl: 'left',
-
                     }
                 }
                 flexDir={{

@@ -1,17 +1,16 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
 import ApexCharts from "apexcharts";
-import { Text, Badge } from "@chakra-ui/react";
 
 class ApexChart extends React.Component {
 
-    
+
     constructor(props) {
         super(props);
 
         this.state = {
             series: [{
-                name:'bitcoin ₹',
+                name: 'Price',
                 data: props.data || []
             }],
             options: {
@@ -23,30 +22,30 @@ class ApexChart extends React.Component {
                         autoScaleYaxis: true
                     },
                     grid: {
-                        show: false,      // you can either change hear to disable all grids
+                        show: false,
                         xaxis: {
                             lines: {
-                                show: false  //or just here to disable only x axis grids
+                                show: false
                             }
                         },
                         yaxis: {
                             lines: {
-                                show: false //or just here to disable only y axis
+                                show: false
                             }
                         },
                     },
                     toolbar: {
-                        show: false, // Hide the toolbar
+                        show: false,
                     }
                 },
                 annotations: {
                     yaxis: [{
                         y: 30,
-                        borderColor: '#999'
+                        borderColor: '#f2f2f2'
 
                     }],
                     xaxis: [{
-                        x: props.data.length > 0 ? props.data[0].x : 0, // Set initial x value
+                        x: props.data.length > 0 ? props.data[0].x : 0,
                         borderColor: '#999',
                         yAxisIndex: 0,
                         label: {
@@ -69,16 +68,16 @@ class ApexChart extends React.Component {
                 },
                 xaxis: {
                     type: 'datetime',
-                    min: props.data.length > 0 ? props.data[0].x : 0, // Set initial min x value
+                    min: props.data.length > 0 ? props.data[0].x : 0,
                     tickAmount: 6,
                     labels: {
-                        show: false, // Hide x-axis labels
+                        show: false,
                     },
                     axisBorder: {
-                        show: false, // Hide x-axis border
+                        show: false,
                     },
                     axisTicks: {
-                        show: false, // Hide x-axis ticks
+                        show: false,
                     },
                 },
                 yaxis: {
@@ -87,16 +86,16 @@ class ApexChart extends React.Component {
                         show: 'false'
                     },
                     gridLines: {
-                        show: false, // Hide x-axis grid lines
+                        show: false,
                     },
                     labels: {
-                        show: false, // Hide x-axis labels
+                        show: false,
                     },
                     axisBorder: {
-                        show: false, // Hide x-axis border
+                        show: false,
                     },
                     axisTicks: {
-                        show: false, // Hide x-axis ticks
+                        show: false
                     },
 
                 },
@@ -106,24 +105,25 @@ class ApexChart extends React.Component {
                     }
                 },
                 fill: {
+                    colors: ['#000000'],
                     type: 'gradient',
                     gradient: {
-                        shadeIntensity: 1,
+                        shade: 'dark',
+                        type: 'vertical',
+                        shadeIntensity: 0.5,
+                        gradientToColors: ['#ffffff'],
                         opacityFrom: 0.7,
                         opacityTo: 0.9,
                         stops: [0, 100]
                     }
-                },
+                }
             },
         };
     }
-
     updateData(timeline) {
         const currentDate = new Date();
         let startDate, endDate;
-
         const newData = this.props.data.filter(point => point.x >= startDate.getTime() && point.x <= endDate.getTime());
-
         this.setState({
             selection: timeline,
             series: [{
@@ -157,10 +157,8 @@ class ApexChart extends React.Component {
         return (
             <div>
                 <div id="chart">
-                        <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={this.props.height} />
-                    
+                    <ReactApexChart options={this.state.options} series={this.state.series} type="area" height={this.props.height} />
                 </div>
-               
             </div>
         );
     }

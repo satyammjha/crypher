@@ -4,9 +4,7 @@ const currencyContext = createContext();
 
 
 const CurrencyProvider = ({ children }) => {
-
-    const [currency, setCurrency] = useState('usd');
-
+    const [currency, setCurrency] = useState('inr');
     return (
         <currencyContext.Provider value={{ currency, setCurrency }}>
             {children}

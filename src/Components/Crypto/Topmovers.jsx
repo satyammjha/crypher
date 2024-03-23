@@ -48,8 +48,9 @@ const Topmovers = () => {
 
     return (
         <Customcard
-            height={'73vh'}
+            height={'76vh'}
             marginTop={'10px'}
+            marginLeft={0}
             background={mode === 'light' ? 'white' : '#1A202C'}
         >
             <Input variant='outline' placeholder='search 🔍' value={inputText} textAlign={'center'} color={mode === 'light' ? 'black' : 'white'} onChange={(e) => {
@@ -62,7 +63,6 @@ const Topmovers = () => {
                     handleSearch(e.target.value)
                 }
             }} />
-
             <HStack gap={'4rem'} background={'#5F00D9'} color='white' borderRadius={'3px'} marginTop={'13px'}>
                 <Heading fontSize={'14px'} padding={'10px'}>Coin</Heading>
                 <Heading fontSize={'14px'} marginLeft={'3.3vw'} padding={'10px'}>Price</Heading>

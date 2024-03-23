@@ -13,6 +13,7 @@ import {
     MenuButton,
     MenuList,
     MenuItem,
+    Image,
     Input,
     InputLeftAddon,
     InputGroup,
@@ -25,38 +26,28 @@ import { MdOutlineArrowOutward } from "react-icons/md";
 import Areachart from '../Charts/Areachart'
 import { IoIosArrowDropdown } from "react-icons/io";
 import { currencyContext } from '../../Context/CurrencyProvider';
+import { ModeContext } from '../../Context/ModeProvider'
+import lineChartGif from '../../Assets/urban-chart.gif'
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const Currentprice = () => {
-    const [days, setDays] = useState(365);
+    const [days, setDays] = useState(1);
     const [chartData, setChartData] = useState([])
+    const [chartDataLoading, setChartDataLoading] = useState()
     const { currency } = useContext(currencyContext);
-
+    const { mode } = useContext(ModeContext)
     const getChartData = async () => {
-        console.log("Currency is", currency)
-
-        try {
-            const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
-            const response = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=7`, options);
-            const data = await response.json();
-            console.log("Data from API:", data);
-
-            if (data.prices.length > 0) {
-                setChartData(data[1]);
-                const timestamp = data.prices[0][0];
-                console.log("Date is", new Date(timestamp));
-            } else {
-                console.log("No data available");
-            }
-        } catch (error) {
-            console.error("Error fetching chart data:", error);
-        }
-    }
+        setChartDataLoading(true);
+        const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${days}`, options);
+        const data = await response.json();
+        setChartData(data.prices);
+        setChartDataLoading(false);
+    };
 
     useEffect(() => {
         getChartData()
-    }, [])
-
+    }, [currency, days])
     const btnStyles = {
         height: '30px',
         bg: 'white',
@@ -78,17 +69,42 @@ const Currentprice = () => {
     const [inputAmount, setInputAmount] = useState(1);
     const [totalAmount, setTotalAmount] = useState();
 
-    return <Customcard w={"55vw"} mt={'10px'} height={'max-content'} padding={'10px'}>
+    return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whiteSmoke' : 'black'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} ></Text>
         <HStack>
             <HStack>
                 <HStack>
-                    <Text fontSize={"15px"} color={'black'} fontWeight={"bold"}>₹{balances.investment}</Text>
+                    <Text fontSize={"15px"} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={"bold"}>₹{balances.investment}</Text>
                     <Text fontSize={"13px"} color={parseInt(balances.gain) > 0 ? 'green' : 'red'} fontWeight={"bold"} >
                         {balances.gain}
                     </Text>
                     <Badge colorScheme='green' fontSize={'7px'} ml={'6px'}>
                         <Icon as={MdOutlineArrowOutward} /></Badge>
+                </HStack>
+                <HStack gap={4 / 2}>
+                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+
+                        setDays(1)
+
+                    }} >24 Hrs.</Tag>
+
+                    <Tag borderRadius={'3px'} cursor={'pointer'} backgroundColor={days === 7 ? '#5F00D9' : '#C5C6D0'} color={days === 7 ? 'white' : 'black'} onClick={() => {
+
+                        setDays(7)
+
+                    }}>7 Days</Tag>
+
+                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 30 ? 'white' : 'initial'} backgroundColor={days === 30 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+
+                        setDays(30)
+
+                    }}>1 Month</Tag>
+                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 365 ? 'white' : 'initial'} backgroundColor={days === 365 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+
+                        setDays(365)
+
+                    }}>1 Year</Tag>
+
                 </HStack>
                 <HStack ml={"100px"}>
                     <Popover>
@@ -161,12 +177,17 @@ const Currentprice = () => {
                             </PopoverBody>
                         </PopoverContent>
                     </Popover>
-                    {/* <ButtonItem text={"Buy"} scheme={purple} icon={<IoMdAddCircle />} style={btnStyles} />
-                    <ButtonItem text={"sell"} scheme={purple} icon={<GrSubtractCircle />} style={btnStyles} /> */}
+
                 </HStack>
             </HStack>
         </HStack>
-        <Areachart data={chartData} height={'100%'} />
+        {chartDataLoading === true ?
+            (
+                <Stack>
+                    <Text fontWeight={'bold'} marginLeft={'40%'}>Loading...</Text>
+                    <Image src={lineChartGif} marginLeft={'30%'} height={'16.6vh'} width={"30vw"} />
+                </Stack>
+            ) : <Areachart data={chartData} height={'100%'} />}
     </Customcard >
 }
 export default Currentprice;
