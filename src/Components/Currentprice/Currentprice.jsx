@@ -24,30 +24,70 @@ import { IoMdAddCircle } from "react-icons/io";
 import { GrSubtractCircle } from "react-icons/gr";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import Areachart from '../Charts/Areachart'
-import { IoIosArrowDropdown } from "react-icons/io";
+import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";
 import { currencyContext } from '../../Context/CurrencyProvider';
 import { ModeContext } from '../../Context/ModeProvider'
 import lineChartGif from '../../Assets/urban-chart.gif'
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const Currentprice = () => {
+
+    const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
+
     const [days, setDays] = useState(1);
     const [chartData, setChartData] = useState([])
     const [chartDataLoading, setChartDataLoading] = useState()
+    // const [tradeCurrency, setTradeCurrency] = useState('USD');
+    const [currentPrice, setCurrentPrice] = useState();
+    const [buyInput, setBuyInput] = useState('btc');
+    const [selected, setSelected] = useState('INR');
+    const [inputAmount, setInputAmount] = useState(1);
+    const [totalAmount, setTotalAmount] = useState();
+    const [changePercent, setChangePercent] = useState(0);
+    const [activeCoin, setActiveCoin] = useState('bitcoin');
+
     const { currency } = useContext(currencyContext);
     const { mode } = useContext(ModeContext)
+
     const getChartData = async () => {
         setChartDataLoading(true);
-        const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${days}`, options);
+
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}/market_chart?vs_currency=${currency}&days=${days}`, options);
         const data = await response.json();
         setChartData(data.prices);
         setChartDataLoading(false);
     };
 
+    const getCurrentPrice = async () => {
+
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${activeCoin}&vs_currencies=${currency}&include_24hr_change=true`, options);
+
+        const data = await response.json();
+        setTimeout(() => {
+            setCurrentPrice(data[activeCoin][currency]);
+            setChangePercent(data[activeCoin][`${currency}_24h_change`]);
+        }, 3000)
+
+        console.log("value:", changePercent)
+    }
+    let timer;
+    const handleChange = (e) => {
+        clearTimeout(timer);
+        const inputVal = e.target.value;
+        timer = setTimeout(() => {
+            setActiveCoin(inputVal);
+        }, 3000);
+    };
+
     useEffect(() => {
+        if (activeCoin === '') {
+            setActiveCoin('bitcoin');
+        }
+        getCurrentPrice()
         getChartData()
-    }, [currency, days])
+
+    }, [currency, days, activeCoin])
+
     const btnStyles = {
         height: '30px',
         bg: 'white',
@@ -62,27 +102,30 @@ const Currentprice = () => {
         inrBalance: '73,000',
         gain: '-3.33%'
     }
-    const [tradeCurrency, setTradeCurrency] = useState('USD');
-    const [currentPrice, setCurrentPrice] = useState(33, 0o0);
-    const [buyInput, setBuyInput] = useState('btc');
-    const [selected, setSelected] = useState('INR');
-    const [inputAmount, setInputAmount] = useState(1);
-    const [totalAmount, setTotalAmount] = useState();
+
 
     return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} ></Text>
-        <HStack>
+        <HStack >
             <HStack>
-                <HStack>
-                    <Text fontSize={"15px"} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={"bold"}>₹{balances.investment}</Text>
-                    <Text fontSize={"13px"} color={parseInt(balances.gain) > 0 ? 'green' : 'red'} fontWeight={"bold"} >
-                        {balances.gain}
+                <HStack >
+                    <HStack >
+                        <Text fontSize={"15px"} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={"bold"}>
+                            {activeCoin[0].toUpperCase() +
+                                activeCoin.slice(1)}:{" "}
+                            {currency === 'USD' ? '$' : '₹'}
+                            {currentPrice}
+                        </Text>
+                    </HStack>
+                    <Text fontSize={"10px"} marginLeft={'-3%'} color={changePercent > 0 ? 'green' : 'red'} fontWeight={"bold"} >
+                        {changePercent ? changePercent.toFixed() : changePercent}%
                     </Text>
-                    <Badge colorScheme='green' fontSize={'7px'} ml={'6px'}>
-                        <Icon as={MdOutlineArrowOutward} /></Badge>
+                    <Badge colorScheme='green' fontSize={'7px'}>
+                        <Icon as={changePercent > 0 ? GoArrowUpRight : GoArrowDownLeft} />
+                    </Badge>
                 </HStack>
-                <HStack gap={4 / 2}>
-                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+                <HStack gap={4 / 2} marginLeft={'16px'}>
+                    <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
 
                         setDays(1)
 
@@ -104,9 +147,9 @@ const Currentprice = () => {
                         setDays(365)
 
                     }}>1 Year</Tag>
-
                 </HStack>
-                <HStack ml={"100px"}>
+                <Input height={'1.7rem'} border={'1px solid blue'} width={'20%'} onChange={handleChange} />
+                <HStack ml={'auto'}>
                     <Popover>
                         <PopoverTrigger>
                             <Button style={btnStyles} leftIcon={<IoMdAddCircle />} colorScheme={'purple'}>Buy</Button>
@@ -121,7 +164,7 @@ const Currentprice = () => {
                             <PopoverBody>
                                 <Stack gap={8}>
                                     <HStack>
-                                        <Menu>
+                                        {/* <Menu>
                                             <MenuButton size={'sm'} as={Button} colorScheme={purple}>
                                                 <HStack>
                                                     <Text>{tradeCurrency}</Text>
@@ -132,9 +175,9 @@ const Currentprice = () => {
                                                 <MenuItem onClick={() => { setTradeCurrency('USD') }}>USD</MenuItem>
                                                 <MenuItem onClick={() => { setTradeCurrency('INR') }}>INR</MenuItem>
                                             </MenuList>
-                                        </Menu>
+                                        </Menu> */}
                                         <Text>
-                                            <Tag> Current Price: </Tag>{currentPrice} {tradeCurrency}
+                                            <Tag> Current Price: </Tag>{currentPrice} {currency}
                                         </Text>
                                     </HStack>
                                     <HStack gap={8}>

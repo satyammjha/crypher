@@ -45,22 +45,21 @@ const Portfolio = () => {
                 <Stack>
                     <HStack>
                         <Text fontSize={"17px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>Total portfolio value:</Text>
-                        <Icon as={RiInformationFill} />
+                        <Icon color={mode === 'light' ? 'gray' : 'whitesmoke'} as={RiInformationFill} />
                     </HStack>
                     <Text fontSize={"20px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>₹{balances.investment} <Badge colorScheme='green'>inr</Badge></Text>
                 </Stack>
                 <Stack
                     marginLeft={{
                         base: '100px',
-
                     }}
                     marginRight={{
                         base: '96'
                     }}
                 >
                     <HStack>
-                        <Text fontSize={"17px"} color={"gray"} fontWeight={"bold"}>Wallet Balance:</Text>
-                        <Icon as={IoWallet} />
+                        <Text fontSize={"17px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>Wallet Balance:</Text>
+                        <Icon color={mode === 'light' ? 'gray' : 'whitesmoke'} as={IoWallet} />
                     </HStack>
                     <HStack>
                         <Text fontSize={"20px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>{balances.btcBalance} <Badge colorScheme='green'>btc</Badge></Text>
