@@ -9,10 +9,6 @@ import {
     PopoverArrow,
     Tag,
     PopoverCloseButton,
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
     Image,
     Input,
     InputLeftAddon,
@@ -59,32 +55,35 @@ const Currentprice = () => {
     };
 
     const getCurrentPrice = async () => {
-
-        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${activeCoin}&vs_currencies=${currency}&include_24hr_change=true`, options);
+        let Currency = currency.toLowerCase();
+        const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${activeCoin}&vs_currencies=${Currency}&include_24hr_change=true`, options);
 
         const data = await response.json();
+        console.log('crnt price', currency, data[activeCoin][currency.toLowerCase()])
         setTimeout(() => {
-            setCurrentPrice(data[activeCoin][currency]);
-            setChangePercent(data[activeCoin][`${currency}_24h_change`]);
-        }, 3000)
-
-        console.log("value:", changePercent)
+            setCurrentPrice(data[activeCoin][Currency]);
+            setChangePercent(data[activeCoin][`${Currency}_24h_change`]);
+        }, 1000)
     }
     let timer;
     const handleChange = (e) => {
-        clearTimeout(timer);
-        const inputVal = e.target.value;
-        timer = setTimeout(() => {
-            setActiveCoin(inputVal);
-        }, 3000);
+
+        if (e.target.value === '') { setActiveCoin('bitcoin') }
+        else {
+            clearTimeout(timer);
+            const inputVal = e.target.value;
+            timer = setTimeout(() => {
+                setActiveCoin(inputVal);
+            }, 3000);
+        }
     };
 
     useEffect(() => {
         if (activeCoin === '') {
             setActiveCoin('bitcoin');
         }
-        getCurrentPrice()
         getChartData()
+        getCurrentPrice()
 
     }, [currency, days, activeCoin])
 
@@ -148,15 +147,13 @@ const Currentprice = () => {
 
                     }}>1 Year</Tag>
                 </HStack>
-                <Input height={'1.7rem'} border={'1px solid blue'} width={'20%'} onChange={handleChange} />
+                <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={'20%'} onChange={handleChange} />
                 <HStack ml={'auto'}>
                     <Popover>
                         <PopoverTrigger>
                             <Button style={btnStyles} leftIcon={<IoMdAddCircle />} colorScheme={'purple'}>Buy</Button>
                         </PopoverTrigger>
-                        <PopoverTrigger>
-                            <Button style={btnStyles} leftIcon={<GrSubtractCircle />} colorScheme={'purple'}>Sell</Button>
-                        </PopoverTrigger>
+                        <Button style={btnStyles} leftIcon={<GrSubtractCircle />} colorScheme={'purple'}>Details</Button>
                         <PopoverContent>
                             <PopoverArrow />
                             <PopoverCloseButton />

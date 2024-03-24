@@ -4,6 +4,7 @@ import { RxDashboard } from "react-icons/rx";
 import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
 import { FaBriefcase } from "react-icons/fa6";
+import { VscGraph } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 import { ModeContext } from "../../Context/ModeProvider";
 import { useContext } from "react";
@@ -29,6 +30,11 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
             icon: TbArrowsDoubleNeSw,
             Link: '/transactions',
             text: 'Transactions'
+        },
+        {
+            icon: VscGraph,
+            Link: '/coindetails/bitcoin',
+            text: 'Coin Detail'
         }
     ]
 
