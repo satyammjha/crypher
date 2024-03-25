@@ -58,7 +58,6 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                                     color={mode === 'light' ? 'gray.500' : 'whitesmoke'}
                                     key={index}
                                     p='5px'
-                                    mt='10px'
                                     cursor='pointer'
                                     transition="0.3s all ease"
                                     _hover={
@@ -66,8 +65,6 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                                     }
                                     marginRight='0px'
                                 >
-
-
                                     <Icon as={link.icon} />
                                     <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
                                 </HStack>
@@ -87,13 +84,12 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                     _hover={
                         { color: 'black', fontWeight: 'bolder' }
                     }
-                    marginLeft='60px'
+                    marginLeft='15px'
                     marginBottom='20px'
                 >
 
                     <Icon as={BiSupport} />
                     <Text fontSize='14px' fontWeight='bold'>Support</Text>
-
                 </HStack>
             </Box>
         </Stack>

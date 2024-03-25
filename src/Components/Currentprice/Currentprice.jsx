@@ -95,12 +95,6 @@ const Currentprice = () => {
     }
 
     let purple = "purple";
-    const balances = {
-        investment: '33,000',
-        btcBalance: '0.893',
-        inrBalance: '73,000',
-        gain: '-3.33%'
-    }
 
 
     return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
