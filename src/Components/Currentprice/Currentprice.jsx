@@ -18,7 +18,6 @@ import {
 import ButtonItem from '../../Utilities/Button';
 import { IoMdAddCircle } from "react-icons/io";
 import { GrSubtractCircle } from "react-icons/gr";
-import { MdOutlineArrowOutward } from "react-icons/md";
 import Areachart from '../Charts/Areachart'
 import { GoArrowDownLeft, GoArrowUpRight } from "react-icons/go";
 import { currencyContext } from '../../Context/CurrencyProvider';

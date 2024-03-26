@@ -3,6 +3,7 @@ import { Customcard } from '../Customcard/Customcard';
 import { HStack, Heading, Input, Image, Stack, SkeletonCircle, SkeletonText, Button } from '@chakra-ui/react';
 import { ModeContext } from '../../Context/ModeProvider';
 import { currencyContext } from '../../Context/CurrencyProvider';
+import { Link } from 'react-router-dom';
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const Topmovers = () => {
@@ -88,52 +89,54 @@ const Topmovers = () => {
                         <>
                             {coinList.map((coin, index) => (
                                 <React.Fragment key={index}>
-                                    <HStack transition={'0.1s ease-in all'} justify={'space-between'} color={mode === 'light' ? 'black' : 'whitesmoke'} cursor={'pointer'}
-                                        onMouseEnter={() => setHoveredIndex(index)}
-                                        onMouseLeave={() => setHoveredIndex(null)}
-                                        _hover={{
-                                            opacity: '0.8',
-                                            padding: '1px',
-                                            borderRadius: '1px',
-                                            backgroundColor: mode === 'light' ? 'whitesmoke' : '#1A202C'
-                                        }}>
-                                        <HStack marginLeft={'-15px'}>
-                                            <Image src={coin.image || coin.thumb} height={'30px'} width={'30px'} borderRadius={'50%'} />
-                                            <Heading fontSize={'14px'}>{coin.symbol}</Heading>
-                                        </HStack>
-                                        <Heading fontSize={'14px'}>
-                                            {currency === 'USD' ? '$ ' : '₹ '}
-                                            {coin.current_price}
-                                        </Heading>
-                                        {hoveredIndex === index ? (
-                                            <Stack transition={'0.1s ease-in all'} >
-                                                <Button height={'15px'} padding={'10px'}
-                                                    width={'5vw'} borderRadius={'5px'} color={'whitesmoke'}
-                                                    backgroundColor={'#5F00D9'}
-                                                    _hover={{
-                                                        color: 'black',
-                                                    }}
-                                                    fontSize={'13px'}
-                                                    variant="solid">Watchlist</Button>
-                                                <Button height={'15px'}
-                                                    padding={'10px'}
-                                                    width={'5vw'}
-                                                    borderRadius={'5px'}
-                                                    backgroundColor={'#5F00D9'}
-                                                    color={'whitesmoke'}
-                                                    _hover={{
-                                                        color: 'black',
-                                                    }}
-                                                    fontSize={'13px'}
-                                                    variant="solid">Trade</Button>
-                                            </Stack>
-                                        ) : (
-                                            <Heading fontSize={'14px'} color={coin.price_change_percentage_24h < 0 ? 'red' : 'green'}>
-                                                {coin.price_change_percentage_24h < 0 ? '' : '+'}
-                                                {coin.price_change_percentage_24h}{'%'}
+                                    <Link to={`/coindetails/${coin.name.toLowerCase()}`} style={{ textDecoration: 'none' }}>
+                                        <HStack transition={'0.1s ease-in all'} justify={'space-between'} color={mode === 'light' ? 'black' : 'whitesmoke'} cursor={'pointer'}
+                                            onMouseEnter={() => setHoveredIndex(index)}
+                                            onMouseLeave={() => setHoveredIndex(null)}
+                                            _hover={{
+                                                opacity: '0.8',
+                                                padding: '0px',
+                                                borderRadius: '1px',
+                                                backgroundColor: mode === 'light' ? 'whitesmoke' : '#1A202C'
+                                            }}>
+                                            <HStack marginLeft={'-15px'}>
+                                                <Image src={coin.image || coin.thumb} height={'30px'} width={'30px'} borderRadius={'50%'} />
+                                                <Heading fontSize={'14px'}>{coin.symbol}</Heading>
+                                            </HStack>
+                                            <Heading fontSize={'14px'}>
+                                                {currency === 'USD' ? '$ ' : '₹ '}
+                                                {coin.current_price}
                                             </Heading>
-                                        )}
-                                    </HStack>
+                                            {hoveredIndex === index ? (
+                                                <HStack transition={'0.1s ease-in all'} >
+                                                    <Button height={'15px'} padding={'10px'}
+                                                        width={'5vw'} borderRadius={'5px'} color={'whitesmoke'}
+                                                        backgroundColor={'#5F00D9'}
+                                                        _hover={{
+                                                            color: 'black',
+                                                        }}
+                                                        fontSize={'13px'}
+                                                        variant="solid">Watchlist</Button>
+                                                    <Button height={'15px'}
+                                                        padding={'10px'}
+                                                        width={'5vw'}
+                                                        borderRadius={'5px'}
+                                                        backgroundColor={'#5F00D9'}
+                                                        color={'whitesmoke'}
+                                                        _hover={{
+                                                            color: 'black',
+                                                        }}
+                                                        fontSize={'13px'}
+                                                        variant="solid">Trade</Button>
+                                                </HStack>
+                                            ) : (
+                                                <Heading fontSize={'14px'} color={coin.price_change_percentage_24h < 0 ? 'red' : 'green'}>
+                                                    {coin.price_change_percentage_24h < 0 ? '' : '+'}
+                                                    {coin.price_change_percentage_24h}{'%'}
+                                                </Heading>
+                                            )}
+                                        </HStack>
+                                    </Link>
                                     <hr />
                                 </React.Fragment>
                             ))}
