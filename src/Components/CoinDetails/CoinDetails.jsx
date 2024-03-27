@@ -14,7 +14,6 @@ const apiKey = process.env.REACT_APP_API_KEY;
 
 const CoinDetails = () => {
     const { id } = useParams("id");
-
     const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
     const [days, setDays] = useState(1);
     const [chartData, setChartData] = useState([])
@@ -34,7 +33,8 @@ const CoinDetails = () => {
         volume: 0,
         imgSrc: '',
         athDate: '',
-        atlDate: ''
+        atlDate: '',
+        description: ''
     });
 
     const { currency } = useContext(currencyContext);
@@ -85,9 +85,15 @@ const CoinDetails = () => {
             // athDate: athDateString,
             // atlDate: atlDateString
         });
-        console.log(coinDetailsData)
     }
 
+    const getCoinDescription = async () => {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}`, options)
+        const data = await response.json();
+        setCoinDetailsData({
+            description: data.description.en
+        })
+    }
     let timer;
     const handleChange = (e) => {
 
@@ -100,6 +106,10 @@ const CoinDetails = () => {
             }, 3000);
         }
     };
+
+    useEffect(() => {
+        getCoinDescription();
+    }, [activeCoin])
 
     useEffect(() => {
         if (activeCoin === '') {
@@ -184,7 +194,7 @@ const CoinDetails = () => {
                         <HStack color={mode === 'light' ? 'black' : 'whitesmoke'}>
                             <Heading as={'h1'} fontSize={'22px'}>Description:</Heading>
                             <Text>
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugit omnis, praesentium cupiditate reprehenderit suscipit molestiae id! Iure, ducimus. Iste aperiam quisquam omnis voluptatum ut molestiae sint. Exercitationem nisi asperiores facere voluptate, temporibus qui! Expedita aut pariatur molestiae nam, a debitis similique delectus, ex rerum unde natus itaque, aliquid at temporibus?
+                                {coinDetailsData.description}
                             </Text>
                         </HStack>
                         <HStack marginTop={'10px'}>

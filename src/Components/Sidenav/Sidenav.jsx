@@ -1,5 +1,5 @@
 import "@fontsource/ubuntu";
-import { HStack, Stack, Text, Icon, Heading, Box } from '@chakra-ui/react'
+import { HStack, Stack, Text, Icon, Heading, Box, Tooltip } from '@chakra-ui/react'
 import { RxDashboard } from "react-icons/rx";
 import { TbArrowsDoubleNeSw } from "react-icons/tb";
 import { BiSupport } from "react-icons/bi";
@@ -46,30 +46,30 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
             justify='space-between'
         >
             <Box>
-
                 <Heading as='h1' textAlign='center' mt='24px' color={mode === 'light' ? 'inherit' : 'whitesmoke'} fontSize='23px' fontWeight='bolder'>
                     @CRYPHER</Heading>
-                <Box mt='6'>
+                <Box mt='6' gap={8}>
                     {navLinks.map((link, index) => {
                         return (
-                            <Link to={link.Link} key={index}>
-                                <HStack
-                                    marginLeft='0'
-                                    color={mode === 'light' ? 'gray.500' : 'whitesmoke'}
-                                    key={index}
-                                    p='5px'
-                                    cursor='pointer'
-                                    transition="0.3s all ease"
-                                    _hover={
-                                        { color: 'black', bg: '#C5C6D0', fontWeight: 'bolder' }
-                                    }
-                                    marginRight='0px'
-                                >
-                                    <Icon as={link.icon} />
-                                    <Text fontSize='14px' fontWeight='bold'>{link.text}</Text>
-                                </HStack>
-                                <hr color={mode === 'light' ? 'black' : 'white'} />
-                            </Link>
+                            <Tooltip relative label={link.text} bg='#5F00D9'>
+                                <Link to={link.Link} key={index}>
+                                    <HStack
+                                        marginLeft={'40%'}
+                                        color={mode === 'light' ? 'gray.500' : 'whitesmoke'}
+                                        key={index}
+                                        p='5px'
+                                        cursor='pointer'
+                                        transition="0.3s all ease"
+                                        _hover={
+                                            { color: 'black', bg: '#C5C6D0', fontWeight: 'bolder' }
+                                        }
+                                        marginRight='0px'
+                                    >
+                                        <Icon as={link.icon} fontSize={'25px'} />
+                                    </HStack>
+                                    <hr color={mode === 'light' ? 'black' : 'white'} />
+                                </Link>
+                            </Tooltip>
                         )
                     })}
                 </Box>
@@ -87,7 +87,6 @@ const Sidenav = ({ boxShadow, backgroundColor }) => {
                     marginLeft='15px'
                     marginBottom='20px'
                 >
-
                     <Icon as={BiSupport} />
                     <Text fontSize='14px' fontWeight='bold'>Support</Text>
                 </HStack>
