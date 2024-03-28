@@ -17,7 +17,7 @@ const CoinDetails = () => {
     const options = { method: 'GET', headers: { 'x-cg-demo-api-key': `${apiKey}` } };
     const [days, setDays] = useState(1);
     const [chartData, setChartData] = useState([])
-    const [chartDataLoading, setChartDataLoading] = useState()
+    const [chartDataLoading, setChartDataLoading] = useState(true)
     // const [tradeCurrency, setTradeCurrency] = useState('USD');
     const [currentPrice, setCurrentPrice] = useState();
     const [buyInput, setBuyInput] = useState('btc');
@@ -27,77 +27,96 @@ const CoinDetails = () => {
     const [changePercent, setChangePercent] = useState(0);
     const [activeCoin, setActiveCoin] = useState(id);
     const [coinDetailsData, setCoinDetailsData] = useState({
-
         ath: 0,
         maxSupply: 0,
         volume: 0,
         imgSrc: '',
         athDate: '',
         atlDate: '',
-        description: ''
     });
+    const [coinDescription, setCoinDescription] = useState();
 
     const { currency } = useContext(currencyContext);
     const { mode } = useContext(ModeContext)
-    const getChartData = async () => {
 
+    const getChartData = async () => {
         setChartDataLoading(true);
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}/market_chart?vs_currency=${currency}&days=${days}`, options);
-        const data = await response.json();
-        setChartData(data.prices);
-        setChartDataLoading(false);
+
+        try {
+            const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}/market_chart?vs_currency=${currency}&days=${days}`, options);
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch chart data');
+            }
+
+            const data = await response.json();
+
+            if (data.prices.length === 0) {
+                setChartData('Data not available currently');
+            } else {
+                setChartData(data.prices);
+            }
+
+        } catch (error) {
+            console.error('Error fetching chart data:', error);
+            setChartData('Data not available currently');
+        } finally {
+            setChartDataLoading(false);
+        }
     };
+
     const getCurrentPrice = async () => {
         let Currency = currency.toLowerCase();
         const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${activeCoin}&vs_currencies=${currency}&include_24hr_change=true`, options);
 
         const data = await response.json();
+        if (data[activeCoin] === undefined) {
+            setCurrentPrice('not available');
+            setChangePercent('not available');
+            return;
+        }
         setTimeout(() => {
             setCurrentPrice(data[activeCoin][Currency]);
             setChangePercent(data[activeCoin][`${Currency}_24h_change`]);
-        }, 1000)
+        }, 500)
     }
-
 
     const getCoinDetails = async () => {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${activeCoin}`, options);
         const data = await response.json();
 
-        // const athTimestamp = data[0].ath_date
-        // const date = new Date(athTimestamp);
-        // const year = date.getFullYear();
-        // const month = String(date.getMonth() + 1).padStart(2, '0');
-        // const day = String(date.getDate()).padStart(2, '0');
-        // const athDateString = `${year}-${month}-${day}`
-
-        // const atlTimestamp = data[0].atl_date
-        // const atldate = new Date(atlTimestamp);
-        // const atlyear = date.getFullYear();
-        // const atlmonth = String(atldate.getMonth() + 1).padStart(2, '0');
-        // const atlday = String(atldate.getDate()).padStart(2, '0');
-        // const atlDateString = `${atlyear}-${atlmonth}-${atlday}`
+        if (data.length === 0) {
+            setCoinDetailsData({
+                ath: 'not available',
+                maxSupply: 'not available',
+                volume: 'not available',
+                imgSrc: 'not available',
+            });
+            return;
+        }
 
         setCoinDetailsData({
             ath: data[0].ath,
             maxSupply: data[0].max_supply,
             volume: data[0].total_volume,
             imgSrc: data[0].image,
-            // athDate: athDateString,
-            // atlDate: atlDateString
         });
     }
 
     const getCoinDescription = async () => {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}`, options)
         const data = await response.json();
-        setCoinDetailsData({
-            description: data.description.en
-        })
+        if (!data.description.en) {
+            setCoinDescription('Description not available');
+            return;
+        }
+        setCoinDescription(data.description.en)
     }
     let timer;
+
     const handleChange = (e) => {
 
-        if (e.target.value === '') { setActiveCoin('bitcoin') }
+        if (e.target.value === '') { setActiveCoin('tron') }
         else {
             clearTimeout(timer);
             const inputVal = e.target.value;
@@ -106,28 +125,29 @@ const CoinDetails = () => {
             }, 3000);
         }
     };
-
-    useEffect(() => {
-        getCoinDescription();
-    }, [activeCoin])
-
     useEffect(() => {
         if (activeCoin === '') {
-            setActiveCoin('bitcoin');
+            setActiveCoin('tron');
         }
-
-        getChartData()
-        getCurrentPrice()
-        getCoinDetails()
-
+        setTimeout(() => {
+            getChartData()
+            getCurrentPrice()
+            getCoinDetails()
+            getCoinDescription();
+        }, 100)
     }, [currency, days, activeCoin])
-
-
     return (
         <NavigationLayout title="Coin Details">
-            <Customcard w={"99%"} mt={'10px'} height={'90%'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'} borderRadius={'5px'} marginLeft={'10px'}>
-
-                <Stack>
+            <Customcard w={"99%"} mt={'10px'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'} borderRadius={'5px'} marginLeft={'10px'} >
+                <Stack height={'55%'} overflowY={'scroll'} scrollBehavior={'hidden'} css={{
+                    overflowY: 'auto',
+                    '::-webkit-scrollbar': {
+                        width: '12px',
+                    },
+                    '::-webkit-scrollbar-button': {
+                        width: '1',
+                    },
+                }}>
                     <HStack alignItems={'center'} gap={4}>
                         <Heading as={'h1'} color={mode === 'light' ? 'black' : 'whitesmoke'}>
                             {activeCoin ? (activeCoin[0].toUpperCase() + activeCoin.slice(1))
@@ -144,7 +164,6 @@ const CoinDetails = () => {
                         </HStack>
                         <HStack gap={4 / 2} marginLeft={'16px'}>
                             <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
-
                                 setDays(1)
 
                             }} >24 Hrs.</Tag>
@@ -169,7 +188,6 @@ const CoinDetails = () => {
                         <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={'20%'} onChange={handleChange} />
                         <Button colorScheme='purple' p={'0px 5px'} size={'sm'}>Wishlist <Box marginLeft={'3px'} marginTop={'1px'}><MdFavorite /></Box></Button>
                     </HStack>
-
                     {chartDataLoading === true ?
                         (
                             <Stack>
@@ -185,16 +203,15 @@ const CoinDetails = () => {
                                 <Tag colorScheme='purple'><Image src={coinDetailsData.imgSrc} height={'50px'} /></Tag>
                             </HStack>
                             <HStack gap={16}>
-                                <Text fontWeight={'bold'}>All time high(ATH):{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.ath}</Text>
-                                <Text fontWeight={'bold'}>Max supply: {coinDetailsData.maupply ? coinDetailsData.maxSupply : 'not available'}</Text>
+                                <Text fontWeight={'bold'}>All time high(ATH):{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.ath ? coinDetailsData.ath : 'not known'}</Text>
+                                <Text fontWeight={'bold'}>Max supply: {coinDetailsData.maxSupply ? coinDetailsData.maxSupply : 'not available'}</Text>
                             </HStack>
-                            <Text fontWeight={'bold'}>Volume:{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.volume}</Text>
-
+                            <Text fontWeight={'bold'}>Volume:{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.volume ? coinDetailsData.volume : 'not available'}</Text>
                         </HStack>
                         <HStack color={mode === 'light' ? 'black' : 'whitesmoke'}>
                             <Heading as={'h1'} fontSize={'22px'}>Description:</Heading>
                             <Text>
-                                {coinDetailsData.description}
+                                {coinDescription ? coinDescription : 'Description not available'}
                             </Text>
                         </HStack>
                         <HStack marginTop={'10px'}>
