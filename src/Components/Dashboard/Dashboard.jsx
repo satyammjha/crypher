@@ -20,7 +20,6 @@ const Dashboard = () => {
                     <Watchlist />
                     <News />
                 </HStack>
-
             </Stack>
             <Topmovers />
         </HStack>

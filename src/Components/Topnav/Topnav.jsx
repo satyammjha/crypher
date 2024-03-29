@@ -19,6 +19,7 @@ import { ModeContext } from "../../Context/ModeProvider";
 import { GiMoon } from "react-icons/gi";
 import { IoMdSunny } from "react-icons/io";
 import { currencyContext } from "../../Context/CurrencyProvider";
+import Login from "../Login/Login";
 
 const Topnav = ({ title, onOpen }) => {
 
@@ -61,7 +62,7 @@ const Topnav = ({ title, onOpen }) => {
 
                     {mode === 'light' ? <GiMoon /> : <IoMdSunny color="white" />}
                 </Box>
-                <Select placeholder='INR' marginLeft={'-30%'} color={mode === 'light' ? 'black' : 'white'} width={'8%'} cursor={'pointer'} onChange={() => {
+                <Select placeholder='INR' marginLeft={'0%'} color={mode === 'light' ? 'black' : 'white'} width={'8%'} cursor={'pointer'} onChange={() => {
                     setCurrency(currency === 'USD' ? 'INR' : 'USD')
                     console.log(currency)
                 }}>
@@ -81,8 +82,10 @@ const Topnav = ({ title, onOpen }) => {
                                 </MenuItem>
                             )
                         })}
+                        
                     </MenuList>
                 </Menu>
+                <Login />
             </HStack>
         </>
     )

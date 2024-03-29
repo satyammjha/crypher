@@ -8,6 +8,7 @@ import { Theme } from './Theme/index'
 import { ModeProvider } from './Context/ModeProvider';
 import { BalanceProvider } from './Context/BalanceProvider';
 import { CurrencyProvider } from './Context/CurrencyProvider';
+import { UserProvider } from './Context/UserProvider';
 
 const root = document.getElementById('root');
 
@@ -16,9 +17,11 @@ const app = (
     <ModeProvider>
       <BalanceProvider>
         <CurrencyProvider>
-          <ChakraProvider theme={Theme}>
-            <App />
-          </ChakraProvider>
+          <UserProvider>
+            <ChakraProvider theme={Theme}>
+              <App />
+            </ChakraProvider>
+          </UserProvider>
         </CurrencyProvider>
       </BalanceProvider>
     </ModeProvider>
