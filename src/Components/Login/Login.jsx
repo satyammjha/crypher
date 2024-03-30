@@ -1,13 +1,12 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ModeContext } from '../../Context/ModeProvider';
 import {
+    Box,
     Button,
     useDisclosure,
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
     Stack,
@@ -22,15 +21,17 @@ import {
     TabPanel,
     Text,
     Badge,
-    Icon
+    useToast,
+    Flex
 } from '@chakra-ui/react'
-import { IoLogIn } from "react-icons/io5";
+import { IoLogIn, IoLogOut } from "react-icons/io5";
 import googleIcon from '../../Assets/google.png'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../Firebase';
 import { userContext } from '../../Context/UserProvider';
 
 const Login = () => {
+    const toast = useToast()
     const { mode } = useContext(ModeContext);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [show, setShow] = useState(false)
@@ -39,7 +40,12 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-const { userLoggedIn, setUserLoggedIn } = useContext(userContext);
+    const [toastMsg, setToastMsg] = useState()
+
+    const { user, setUser, userLoggedIn, setUserLoggedIn } = useContext(userContext);
+
+    console.log(userLoggedIn)
+
     const handleSignUp = async () => {
 
         if (password !== confirmPassword) {
@@ -63,15 +69,92 @@ const { userLoggedIn, setUserLoggedIn } = useContext(userContext);
         }
         else {
             const result = await signInWithEmailAndPassword(auth, email, password);
+            setUserLoggedIn(true)
             alert(result.user.email)
             console.log('result:', result.user.email)
-            setUserLoggedIn(true)
             onClose()
         }
     }
+
+    const handleSignOut = () => {
+        signOut(auth)
+            .then(() => {
+                setUserLoggedIn(false);
+                console.log(userLoggedIn);
+                setToastMsg('User logged out successfully')
+                document.getElementById('toastBtn').click()
+            })
+            .catch(error => {
+                console.error('Sign-out error:', error);
+            });
+    }
+    const googleProvider = new GoogleAuthProvider();
+
+    const signInWithGoogle = () => {
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                setToastMsg('User logged in successfully')
+                setUserLoggedIn(true);
+                onClose();
+                document.getElementById('toastBtn').click()
+                console.log("User logged in:", userLoggedIn);
+                console.log("Sign-in result:", result);
+            })
+            .catch((error) => {
+                console.error("Sign-in error:", error);
+            });
+    };
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUser(user)
+                console.log('user:', user.email)
+            }
+            else {
+                setUser(null)
+            }
+        }
+        )
+    })
+
     return (
         <>
-            <Button onClick={onOpen} leftIcon={<IoLogIn />} backgroundColor={"#5F00D9"} color={'white'}>Login</Button>
+            <Button
+                id='toastBtn'
+                display={'none'}
+                onClick={() =>
+                    toast({
+                        isClosable: true,
+                        position: 'top-right',
+                        render: ({ onClose }) => (
+                            <Box color={'whitesmoke'} p={3} bg={mode === 'light' ? '#5F00D9' : 'black'}>
+                                <Flex justify="space-between" align="center">
+                                    <Box color={mode === 'light' ? 'black' : 'whitesmoke'}>{toastMsg}</Box>
+                                    <Button onClick={onClose} variant="ghost" colorScheme="whitesmoke">
+                                        X
+                                    </Button>
+                                </Flex>
+                            </Box>
+                        ),
+                    })
+                }
+            >
+                Show Toast
+            </Button>
+            {userLoggedIn === false ? (
+                <Button onClick={onOpen} leftIcon={<IoLogIn />} backgroundColor={"#5F00D9"} color={'white'}>
+                    Login
+                </Button>
+            ) : (
+                <Button rightIcon={<IoLogOut />} backgroundColor={"#5F00D9"} _hover={{ opacity: '0.8' }} color={'white'} onClick={() => {
+                    handleSignOut();
+                    console.log(userLoggedIn);
+                }}>
+                    Logout
+                </Button>
+            )}
+
             <Modal isOpen={isOpen} onClose={onClose} >
                 <ModalOverlay />
                 <ModalContent backgroundColor={mode === 'light' ? 'whitesmoke' : 'black'} color={mode === 'light' ? 'whitesmoke' : 'black'}>
@@ -79,10 +162,10 @@ const { userLoggedIn, setUserLoggedIn } = useContext(userContext);
                         <TabList gap={0}>
                             <Tab onClick={() => {
                                 setActiveTab('signin')
-                            }} backgroundColor={activeTab === 'signin' ? '#5f00d9' : 'unset'} color={'white'}>SignIn</Tab>
+                            }} backgroundColor={activeTab === 'signin' ? '#5f00d9' : 'unset'} color={activeTab === 'signin' ? 'whitesmoke' : 'black'}>SignIn</Tab>
                             <Tab onClick={() => {
                                 setActiveTab('signup')
-                            }} backgroundColor={activeTab === 'signup' ? '#5f00d9' : 'unset'} color={'white'}>SignUp</Tab>
+                            }} backgroundColor={activeTab === 'signup' ? '#5f00d9' : 'unset'} color={activeTab === 'signup' ? 'whitesmoke' : 'black'}>SignUp</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
@@ -113,7 +196,11 @@ const { userLoggedIn, setUserLoggedIn } = useContext(userContext);
                                         <Text color={mode === 'light' ? 'black' : 'whitesmoke'} marginTop={'-10px'} marginLeft={'47%'}>OR</Text>
                                         <Badge marginLeft={'43%'} cursor={'pointer'} _hover={{
                                             opacity: '0.8'
-                                        }} borderRadius={'50%'} padding={'0.5px'} maxWidth={'max-content'} colorScheme='purple'><Image src={googleIcon} height={'50px'} width={'50px'} /></Badge>
+                                        }} borderRadius={'50%'} padding={'0.5px'} maxWidth={'max-content'} colorScheme='purple' onClick={() => {
+
+                                            signInWithGoogle();
+
+                                        }}><Image src={googleIcon} height={'50px'} width={'50px'} /></Badge>
                                     </Stack>
                                 </ModalBody>
                             </TabPanel>
@@ -167,7 +254,9 @@ const { userLoggedIn, setUserLoggedIn } = useContext(userContext);
                                         <Text color={mode === 'light' ? 'black' : 'whitesmoke'} marginTop={'-10px'} marginLeft={'47%'}>OR</Text>
                                         <Badge marginLeft={'43%'} cursor={'pointer'} _hover={{
                                             opacity: '0.8'
-                                        }} borderRadius={'50%'} padding={'0.5px'} maxWidth={'max-content'} colorScheme='purple'><Image src={googleIcon} height={'50px'} width={'50px'} /></Badge>
+                                        }} borderRadius={'50%'} padding={'0.5px'} maxWidth={'max-content'} colorScheme='purple'><Image src={googleIcon} height={'50px'} width={'50px'} onClick={() => {
+                                            signInWithGoogle();
+                                        }} /></Badge>
                                     </Stack>
                                 </ModalBody>
                             </TabPanel>

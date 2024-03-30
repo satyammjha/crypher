@@ -50,7 +50,6 @@ const CoinDetails = () => {
             }
 
             const data = await response.json();
-
             if (data.prices.length === 0) {
                 setChartData('Data not available currently');
             } else {
@@ -134,7 +133,7 @@ const CoinDetails = () => {
             getCurrentPrice()
             getCoinDetails()
             getCoinDescription();
-        }, 100)
+        }, 50)
     }, [currency, days, activeCoin])
     return (
         <NavigationLayout title="Coin Details">

@@ -68,21 +68,19 @@ const Topnav = ({ title, onOpen }) => {
                 }}>
                     <option value='USD'>USD</option>
                 </Select>
-
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                        <Icon as={FaCircleUser} fontSize={"23px"} />
+                <Menu >
+                    <MenuButton border={'0.8px solid white'} backgroundColor={'unset'} as={Button} rightIcon={<ChevronDownIcon color={'whitesmoke'} />}>
+                        <Icon color={'whitesmoke'} as={FaCircleUser} fontSize={"23px"} />
                     </MenuButton>
-                    <MenuList>
+                    <MenuList backgroundColor={'#5f00d9'}>
                         {topNavLinks.map((Links, index) => {
                             return (
-                                <MenuItem key={index} justify={"space-between"}>
+                                <MenuItem color={'whitesmoke'} backgroundColor={'#5f00d9'} key={index} justify={"space-between"}>
                                     <Icon as={Links.icon} fontSize={'20px'} mx='10px' />
                                     {Links.link}
                                 </MenuItem>
                             )
                         })}
-                        
                     </MenuList>
                 </Menu>
                 <Login />
