@@ -4,8 +4,11 @@ import { HStack, Heading, Input, Image, Stack, SkeletonCircle, SkeletonText, But
 import { ModeContext } from '../../Context/ModeProvider';
 import { currencyContext } from '../../Context/CurrencyProvider';
 import { Link } from 'react-router-dom';
-const apiKey = process.env.REACT_APP_API_KEY;
+import { db } from '../../Firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import Watchlist from '../Watchlist/Watchlist';
 
+const apiKey = process.env.REACT_APP_API_KEY;
 const Topmovers = () => {
     const { mode } = useContext(ModeContext);
     const { currency } = useContext(currencyContext);
@@ -13,6 +16,8 @@ const Topmovers = () => {
     const [loading, setLoading] = useState(false);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [inputText, setInputText] = useState('');
+    const { watchlist, setWatchList } = useContext(currencyContext)
+
 
     const handleSearch = async () => {
         setLoading(true);
@@ -43,9 +48,22 @@ const Topmovers = () => {
         }
     };
 
+
+    const addToWatchList = async (id) => {
+        const coinRef = doc(db, 'watchlist', id);
+        try {
+            await setDoc(coinRef,
+                { coins: watchlist ? [...watchlist, coinList.id] : [coinList.id] });
+        }
+        catch {
+            console.log('error adding to watchlist');
+        }
+    }
+
     useEffect(() => {
         fetchCoins();
     }, [currency]);
+
 
     return (
         <Customcard
@@ -116,7 +134,9 @@ const Topmovers = () => {
                                                             color: 'black',
                                                         }}
                                                         fontSize={'13px'}
-                                                        variant="solid">Watchlist</Button>
+                                                        variant="solid" onClick={() => {
+                                                            addToWatchList(coin.id);
+                                                        }}  >Watchlist</Button>
                                                     <Button height={'15px'}
                                                         padding={'10px'}
                                                         width={'5vw'}

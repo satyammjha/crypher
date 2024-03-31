@@ -110,6 +110,7 @@ const Login = () => {
             if (user) {
                 setUser(user)
                 console.log('user:', user.email)
+                console.log(user)
             }
             else {
                 setUser(null)

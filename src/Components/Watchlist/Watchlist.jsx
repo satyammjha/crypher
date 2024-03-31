@@ -1,12 +1,14 @@
 import { useContext } from 'react'
 import { ModeContext } from '../../Context/ModeProvider'
 import { userContext } from '../../Context/UserProvider'
+import { currencyContext } from '../../Context/CurrencyProvider'
 import { Customcard } from '../Customcard/Customcard'
 import { Box, Text } from '@chakra-ui/react'
 
 const Watchlist = () => {
     const { mode } = useContext(ModeContext)
     const { userLoggedIn } = useContext(userContext)
+    const { watchlist, setWatchList } = useContext(currencyContext)
     return (
         <>
             <Customcard
