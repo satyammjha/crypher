@@ -28,88 +28,82 @@ const CoinDetails = () => {
     const [activeCoin, setActiveCoin] = useState(id);
     const [coinDetailsData, setCoinDetailsData] = useState({
         ath: 0,
-        maxSupply: 0,
+        maxSupply: '',
         volume: 0,
         imgSrc: '',
         athDate: '',
         atlDate: '',
     });
+    const [coinDataLoading, setCoinDataLoading] = useState()
     const [coinDescription, setCoinDescription] = useState();
 
     const { currency } = useContext(currencyContext);
     const { mode } = useContext(ModeContext)
 
+
+    console.log('coin details', id)
+
     const getChartData = async () => {
         setChartDataLoading(true);
-
-        try {
-            const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}/market_chart?vs_currency=${currency}&days=${days}`, options);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch chart data');
-            }
-
-            const data = await response.json();
-            if (data.prices.length === 0) {
-                setChartData('Data not available currently');
-            } else {
-                setChartData(data.prices);
-            }
-
-        } catch (error) {
-            console.error('Error fetching chart data:', error);
-            setChartData('Data not available currently');
-        } finally {
-            setChartDataLoading(false);
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}/market_chart?vs_currency=${currency}&days=${days}`, options);
+        const data = await response.json();
+        if (data) {
+            setChartData(data.prices);
         }
-    };
+        else {
+            setChartData('Data not available')
+        }
+        setChartDataLoading(false);
+    }
 
     const getCurrentPrice = async () => {
         let Currency = currency.toLowerCase();
         const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${activeCoin}&vs_currencies=${currency}&include_24hr_change=true`, options);
 
         const data = await response.json();
-        if (data[activeCoin] === undefined) {
-            setCurrentPrice('not available');
-            setChangePercent('not available');
-            return;
-        }
-        setTimeout(() => {
+        if (data) {
             setCurrentPrice(data[activeCoin][Currency]);
             setChangePercent(data[activeCoin][`${Currency}_24h_change`]);
-        }, 500)
+        }
+        else {
+            setCurrentPrice(0);
+            setChangePercent(0);
+        }
     }
 
     const getCoinDetails = async () => {
+        setCoinDataLoading(true)
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&ids=${activeCoin}`, options);
         const data = await response.json();
-
-        if (data.length === 0) {
+        if (data) {
             setCoinDetailsData({
-                ath: 'not available',
-                maxSupply: 'not available',
-                volume: 'not available',
-                imgSrc: 'not available',
-            });
-            return;
+                ath: data[0].ath,
+                maxSupply: data[0].max_supply,
+                volume: data[0].total_volume,
+                imgSrc: data[0].image
+            })
         }
-
-        setCoinDetailsData({
-            ath: data[0].ath,
-            maxSupply: data[0].max_supply,
-            volume: data[0].total_volume,
-            imgSrc: data[0].image,
-        });
+        else {
+            setCoinDetailsData({
+                ath: "not ava",
+                maxSupply: "not ava",
+                volume: "not ava",
+                imgSrc: "not ava",
+            })
+        }
+        setCoinDataLoading(false)
     }
 
     const getCoinDescription = async () => {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${activeCoin}`, options)
         const data = await response.json();
-        if (!data.description.en) {
-            setCoinDescription('Description not available');
-            return;
+        console.log('description data')
+        if (data) {
+            setCoinDescription(data.description.en)
         }
-        setCoinDescription(data.description.en)
+        else {
+            setCoinDescription('Description not available for the coin')
+        }
     }
     let timer;
 
@@ -121,19 +115,19 @@ const CoinDetails = () => {
             const inputVal = e.target.value;
             timer = setTimeout(() => {
                 setActiveCoin(inputVal.toLowerCase());
-            }, 3000);
+            }, 2000);
         }
     };
     useEffect(() => {
         if (activeCoin === '') {
-            setActiveCoin('tron');
+            setActiveCoin('bitcoin');
         }
         setTimeout(() => {
             getChartData()
             getCurrentPrice()
             getCoinDetails()
             getCoinDescription();
-        }, 50)
+        }, 1000)
     }, [currency, days, activeCoin])
     return (
         <NavigationLayout title="Coin Details">
@@ -164,7 +158,6 @@ const CoinDetails = () => {
                         <HStack gap={4 / 2} marginLeft={'16px'}>
                             <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
                                 setDays(1)
-
                             }} >24 Hrs.</Tag>
 
                             <Tag borderRadius={'3px'} cursor={'pointer'} backgroundColor={days === 7 ? '#5F00D9' : '#C5C6D0'} color={days === 7 ? 'white' : 'black'} onClick={() => {
@@ -179,9 +172,7 @@ const CoinDetails = () => {
 
                             }}>1 Month</Tag>
                             <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 365 ? 'white' : 'initial'} backgroundColor={days === 365 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
-
                                 setDays(365)
-
                             }}>1 Year</Tag>
                         </HStack>
                         <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={'20%'} onChange={handleChange} />
@@ -203,20 +194,16 @@ const CoinDetails = () => {
                             </HStack>
                             <HStack gap={16}>
                                 <Text fontWeight={'bold'}>All time high(ATH):{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.ath ? coinDetailsData.ath : 'not known'}</Text>
-                                <Text fontWeight={'bold'}>Max supply: {coinDetailsData.maxSupply ? coinDetailsData.maxSupply : 'not available'}</Text>
+                                <Text fontWeight={'bold'}>Max supply: {coinDetailsData.maxSupply}</Text>
                             </HStack>
-                            <Text fontWeight={'bold'}>Volume:{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.volume ? coinDetailsData.volume : 'not available'}</Text>
+
+                            {coinDataLoading === true ? <Text>Loading...</Text> : <Text fontWeight={'bold'}>Volume:{currency === 'USD' ? ' $' : ' ₹'}{coinDetailsData.volume}</Text>}
                         </HStack>
                         <HStack color={mode === 'light' ? 'black' : 'whitesmoke'}>
                             <Heading as={'h1'} fontSize={'22px'}>Description:</Heading>
                             <Text>
-                                {coinDescription ? coinDescription : 'Description not available'}
+                                {coinDescription}
                             </Text>
-                        </HStack>
-                        <HStack marginTop={'10px'}>
-                            <Button colorScheme='purple' p={'0px 5px'} size={'sm'}>Whitepaper <Box marginLeft={'3px'} marginTop={'1px'}><IoDocumentSharp /></Box></Button>
-                            <Button colorScheme='purple' p={'0px 5px'} size={'sm'}>Wishlist <Box marginLeft={'3px'} marginTop={'1px'}><MdFavorite /></Box></Button>
-                            <Button colorScheme='purple' p={'0px 5px'} size={'sm'}>Wishlist <Box marginLeft={'3px'} marginTop={'1px'}><MdFavorite /></Box></Button>
                         </HStack>
                     </Stack>
                 </Stack>
