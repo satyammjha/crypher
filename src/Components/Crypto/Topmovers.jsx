@@ -48,7 +48,6 @@ const Topmovers = () => {
         }
     };
 
-
     const addToWatchList = async (id) => {
         const coinRef = doc(db, 'watchlist', id);
         try {
@@ -69,7 +68,13 @@ const Topmovers = () => {
         <Customcard
             height={'76vh'}
             marginTop={'10px'}
-            marginLeft={0}
+            width={{
+                base: '98vw'
+            }}
+            marginLeft={{
+                base: '2vw',
+                lg: 0
+            }}
             background={mode === 'light' ? 'white' : '#1A202C'}
         >
             <Input variant='outline' placeholder='search 🔍' value={inputText} textAlign={'center'} color={mode === 'light' ? 'black' : 'white'} onChange={(e) => {

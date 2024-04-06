@@ -14,9 +14,12 @@ function NavigationDrawer({ isOpen, onClose }) {
                 placement='left'
                 onClose={onClose}
                 bg="white"
+                isFullHeight={true}
             >
                 <DrawerOverlay />
-                <DrawerContent>
+                <DrawerContent width={{
+                    base: '10vw'
+                }}>
                     <DrawerCloseButton />
                     <Sidenav />
 

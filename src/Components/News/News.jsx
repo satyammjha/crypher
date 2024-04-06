@@ -38,7 +38,10 @@ const News = () => {
         <Customcard
             height={'46.6vh'}
             backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}
-            width={'28.5vw'}
+            width={{
+                base: '48vw',
+                lg: '28.5vw'
+            }}
             css={{
                 overflowY: 'auto',
                 '::-webkit-scrollbar': {

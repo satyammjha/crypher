@@ -11,7 +11,11 @@ const Dashboard = () => {
         <Box marginTop={'-8px'}>
             <Portfolio />
         </Box>
-        <HStack alignItems={'top'}>
+        <Stack alignItems={'top'} direction={{
+            base: 'column',
+            md: 'row',
+            lg: 'row'
+        }}>
             <Stack>
                 <HStack>
                     <Currentprice />
@@ -22,7 +26,7 @@ const Dashboard = () => {
                 </HStack>
             </Stack>
             <Topmovers />
-        </HStack>
+        </Stack>
     </NavigationLayout >
 }
 export default Dashboard;

@@ -14,7 +14,10 @@ const Watchlist = () => {
             <Customcard
                 height={'46.5vh'}
                 backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}
-                width={'28.5vw'}
+                width={{
+                    base: '48vw',
+                    lg: '28.5vw'
+                }}
                 css={{
                     overflowY: 'auto',
                     '::-webkit-scrollbar': {
@@ -25,6 +28,9 @@ const Watchlist = () => {
                     },
                 }}
                 padding={'unset'}
+                marginLeft={{
+                    base: '2vw'
+                }}
             >
                 <Text backgroundColor={"#5F00D9"} padding={'2px 6px'} fontSize={"16px"} color={'whitesmoke'} fontWeight={"bold"}
                     position={'relative'} w={'100%'}>Watchlist</Text>

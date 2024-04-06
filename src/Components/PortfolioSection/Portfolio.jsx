@@ -24,7 +24,13 @@ const Portfolio = () => {
     return (
         <>
             <HStack
-                w={'89vw'}
+                w={{
+                    lg: '89vw',
+                    base: '98vw'
+                }}
+                marginLeft={{
+                    base: '2vw'
+                }}
                 borderRadius={"xl"}
                 backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}
                 padding={"10px"}
@@ -42,7 +48,9 @@ const Portfolio = () => {
 
                 }}>
 
-                <Stack>
+                <Stack direction={{
+                    base: 'row'
+                }}>
                     <HStack>
                         <Text fontSize={"17px"} color={mode === 'light' ? 'gray' : 'whitesmoke'} fontWeight={"bold"}>Total portfolio value:</Text>
                         <Icon color={mode === 'light' ? 'gray' : 'whitesmoke'} as={RiInformationFill} />
@@ -51,10 +59,10 @@ const Portfolio = () => {
                 </Stack>
                 <Stack
                     marginLeft={{
-                        base: '100px',
+                        base: '0px',
                     }}
-                    marginRight={{
-                        base: '96'
+                    direction={{
+                        base: 'row'
                     }}
                 >
                     <HStack>

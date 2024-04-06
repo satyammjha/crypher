@@ -43,7 +43,11 @@ const Topnav = ({ title, onOpen }) => {
 
     return (
         <>
-            <HStack boxShadow='xl' h='16' justify={"space-between"} mx={"auto"} px='32' backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
+            <HStack boxShadow='xl' h='16' justify={"space-between"} mx={"auto"} px={{
+                base: '2',
+                md: '32',
+                lg: '32'
+            }} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
                 <Icon as={GiHamburgerMenu} display={{
                     lg: 'none',
                     base: 'block'

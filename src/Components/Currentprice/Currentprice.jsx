@@ -96,7 +96,12 @@ const Currentprice = () => {
     let purple = "purple";
 
 
-    return <Customcard w={"57.5vw"} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'}>
+    return <Customcard w={{
+        base: '98vw',
+        lg: "57.5vw"
+    }} mt={'10px'} height={'max-content'} padding={'10px'} backgroundColor={mode === 'light' ? 'whitesmoke' : '#1A202C'} marginLeft={{
+        base: '2vw'
+    }}>
         <Text Text fontSize={"13px"} color={"gray"} fontWeight={"bold"} ></Text>
         <HStack >
             <HStack>
@@ -116,7 +121,9 @@ const Currentprice = () => {
                         <Icon as={changePercent > 0 ? GoArrowUpRight : GoArrowDownLeft} />
                     </Badge>
                 </HStack>
-                <HStack gap={4 / 2} marginLeft={'16px'}>
+                <HStack gap={4 / 2} marginLeft={'16px'} display={{
+                    base: 'none'
+                }}>
                     <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
 
                         setDays(1)
@@ -140,13 +147,16 @@ const Currentprice = () => {
 
                     }}>1 Year</Tag>
                 </HStack>
-                <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={'20%'} onChange={handleChange} />
+                <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={{
+                    base: '30vw',
+                    lg: '20%'
+                }} onChange={handleChange} />
                 <HStack ml={'auto'}>
                     <Popover>
                         <PopoverTrigger>
                             <Button style={btnStyles} leftIcon={<IoMdAddCircle />} colorScheme={'purple'}>Buy</Button>
                         </PopoverTrigger>
-                        <Button style={btnStyles} leftIcon={<GrSubtractCircle />} colorScheme={'purple'}>Details</Button>
+                        <Button style={btnStyles} display={{ base: 'none' }} leftIcon={<GrSubtractCircle />} colorScheme={'purple'}>Details</Button>
                         <PopoverContent>
                             <PopoverArrow />
                             <PopoverCloseButton />
@@ -218,7 +228,10 @@ const Currentprice = () => {
             (
                 <Stack>
                     <Text fontWeight={'bold'} marginLeft={'40%'}>Loading...</Text>
-                    <Image src={lineChartGif} marginLeft={'30%'} height={'16.6vh'} width={"30vw"} />
+                    <Image src={lineChartGif} marginLeft={'30%'} height={{
+                        base: '12.5vh',
+                        lg: '16.6vh'
+                    }} width={"30vw"} />
                 </Stack>
             ) : <Areachart data={chartData} height={'100%'} />}
     </Customcard >
