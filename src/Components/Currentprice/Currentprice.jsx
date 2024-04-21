@@ -121,37 +121,39 @@ const Currentprice = () => {
                         <Icon as={changePercent > 0 ? GoArrowUpRight : GoArrowDownLeft} />
                     </Badge>
                 </HStack>
-                <HStack gap={4 / 2} marginLeft={'16px'} display={{
-                    base: 'none'
+                <HStack gap={8} marginLeft={'16px'} display={{
+                    base: 'none',
+                    sm: 'unset',
+                    lg: 'unset'
                 }}>
-                    <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+                    <Tag width={'max-content'} borderRadius={'3px'} cursor={'pointer'} color={days === 1 ? 'white' : 'black'} marginRight={'10px'} backgroundColor={days === 1 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
 
                         setDays(1)
 
                     }} >24 Hrs.</Tag>
 
-                    <Tag borderRadius={'3px'} cursor={'pointer'} backgroundColor={days === 7 ? '#5F00D9' : '#C5C6D0'} color={days === 7 ? 'white' : 'black'} onClick={() => {
+                    <Tag borderRadius={'3px'} cursor={'pointer'} backgroundColor={days === 7 ? '#5F00D9' : '#C5C6D0'} marginRight={'10px'} color={days === 7 ? 'white' : 'black'} onClick={() => {
 
                         setDays(7)
 
                     }}>7 Days</Tag>
 
-                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 30 ? 'white' : 'initial'} backgroundColor={days === 30 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+                    <Tag borderRadius={'3px'} cursor={'pointer'} marginRight={'10px'} color={days === 30 ? 'white' : 'initial'} backgroundColor={days === 30 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
 
                         setDays(30)
 
                     }}>1 Month</Tag>
-                    <Tag borderRadius={'3px'} cursor={'pointer'} color={days === 365 ? 'white' : 'initial'} backgroundColor={days === 365 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
+                    <Tag marginRight={'10px'} borderRadius={'3px'} cursor={'pointer'} color={days === 365 ? 'white' : 'initial'} backgroundColor={days === 365 ? '#5F00D9' : '#C5C6D0'} onClick={() => {
 
                         setDays(365)
 
                     }}>1 Year</Tag>
                 </HStack>
-                <Input height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={{
+                <Input marginRight={'10px'} height={'1.7rem'} textAlign={'center'} color={mode === 'light' ? 'black' : 'whitesmoke'} fontWeight={'bold'} placeholder='search 🔍' border={'1px solid blue'} width={{
                     base: '30vw',
                     lg: '20%'
                 }} onChange={handleChange} />
-                <HStack ml={'auto'}>
+                <HStack>
                     <Popover>
                         <PopoverTrigger>
                             <Button style={btnStyles} leftIcon={<IoMdAddCircle />} colorScheme={'purple'}>Buy</Button>
